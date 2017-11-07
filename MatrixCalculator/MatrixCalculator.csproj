@@ -57,6 +57,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fraction.cs" />
+    <Compile Include="FractionTests.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="MatrixTests.cs" />
     <Compile Include="Program.cs" />

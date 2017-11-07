@@ -4,22 +4,14 @@ namespace MatrixCalculator
 {
     public class Matrix<T> where T : struct
     {
-        public static int NumberOfRows { get; set; }
-        public static int NumberOfColumns { get; set; }
+        public int NumberOfRows => MatrixValues.GetLength(0);
+        public int NumberOfColumns => MatrixValues.GetLength(1);
 
         public T[ , ] MatrixValues { get; set; }
 
         public Matrix(T[ ,] matrix)
         {
             MatrixValues = matrix;
-            NumberOfRows = matrix.GetLength(0);
-            NumberOfColumns = matrix.GetLength(1);
-        }
-
-        public Matrix(int numberOfRows, int numberOfColumns)
-        {
-            NumberOfRows = numberOfRows;
-            NumberOfColumns = numberOfColumns;
         }
 
         private T[,] InitializeWithRandomNumbers()
@@ -46,25 +38,29 @@ namespace MatrixCalculator
             return new Matrix<T>(Multiply(i, j));
         }
 
-        private static T[,] Multiply(Matrix<T> matrix, Matrix<T> matrix1)
+        private static T[,] Multiply(Matrix<T> a, Matrix<T> b)
         {
-            var result = new T[NumberOfRows, NumberOfColumns];
-            for (int i = 0; i < NumberOfRows; i++)
+            var numberOfRows = a.NumberOfRows;
+            var numberOfColumns = a.NumberOfColumns;
+            var result = new T[a.NumberOfRows, a.NumberOfColumns];
+            for (int i = 0; i < numberOfRows; i++)
             {
-                for (int j = 0; j < NumberOfColumns; j++)
+                for (int j = 0; j < numberOfColumns; j++)
                 {
-                    result[i,j] = (dynamic)matrix.MatrixValues[i, j] * (dynamic)matrix1.MatrixValues[i, j];
+                    result[i,j] = (dynamic)a.MatrixValues[i, j] * (dynamic)b.MatrixValues[i, j];
                 }
             }
             return result;
         }
 
-        public static T[ ,] Add(Matrix<T> a, Matrix<T> b)
+        private static T[,] Add(Matrix<T> a, Matrix<T> b)
         {
-            var matrix = new T[NumberOfRows, NumberOfColumns];
-            for (int i = 0; i < NumberOfRows; i++)
+            var numberOfRows = a.NumberOfRows;
+            var numberOfColumns = a.NumberOfColumns;
+            var matrix = new T[numberOfRows, numberOfColumns];
+            for (int i = 0; i < numberOfRows; i++)
             {
-                for (int j = 0; j < NumberOfColumns; j++)
+                for (int j = 0; j < numberOfColumns; j++)
                 {
                     matrix[i, j] = (dynamic)a.MatrixValues[i, j] + (dynamic)b.MatrixValues[i, j];
                 }
