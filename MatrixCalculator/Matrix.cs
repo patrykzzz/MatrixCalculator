@@ -41,6 +41,24 @@ namespace MatrixCalculator
             return new Matrix<T>(Add(i, j));
         }
 
+        public static Matrix<T> operator *(Matrix<T>i, Matrix<T> j)
+        {
+            return new Matrix<T>(Multiply(i, j));
+        }
+
+        private static T[,] Multiply(Matrix<T> matrix, Matrix<T> matrix1)
+        {
+            var result = new T[NumberOfRows, NumberOfColumns];
+            for (int i = 0; i < NumberOfRows; i++)
+            {
+                for (int j = 0; j < NumberOfColumns; j++)
+                {
+                    result[i,j] = (dynamic)matrix.MatrixValues[i, j] * (dynamic)matrix1.MatrixValues[i, j];
+                }
+            }
+            return result;
+        }
+
         public static T[ ,] Add(Matrix<T> a, Matrix<T> b)
         {
             var matrix = new T[NumberOfRows, NumberOfColumns];
