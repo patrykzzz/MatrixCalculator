@@ -30,25 +30,49 @@ namespace MatrixCalculator
 
         public static Fraction operator +(Fraction x, Fraction y)
         {
-            return new Fraction(AddFraction(x, y));
+            return new Fraction(Add(x, y));
         }
 
         public static Fraction operator -(Fraction x, Fraction y)
         {
-            return new Fraction(SubtractFraction(x, y));
+            return new Fraction(Subtract(x, y));
         }
 
         public static Fraction operator /(Fraction x, Fraction y)
         {
-            return new Fraction(DivideFraction(x, y));
+            return new Fraction(Divide(x, y));
         }
 
         public static Fraction operator *(Fraction x, Fraction y)
         {
-            return new Fraction(MultipleFraction(x, y));
+            return new Fraction(Multiple(x, y));
         }
 
-        private static Fraction AddFraction(Fraction fst, Fraction sec)
+        public static Fraction operator +(Fraction x, long num)
+        {
+            Fraction y = new Fraction(num, 1);
+            return new Fraction(Add(x, y));
+        }
+
+        public static Fraction operator -(Fraction x, long num)
+        {
+            Fraction y = new Fraction(num, 1);
+            return new Fraction(Subtract(x, y));
+        }
+
+        public static Fraction operator /(Fraction x, long num)
+        {
+            Fraction y = new Fraction(num, 1);
+            return new Fraction(Divide(x, y));
+        }
+
+        public static Fraction operator *(Fraction x, long num)
+        {
+            Fraction y = new Fraction(num, 1);
+            return new Fraction(Multiple(x, y));
+        }
+
+        private static Fraction Add(Fraction fst, Fraction sec)
         {
             long a = (fst.a * sec.b) + (sec.a * fst.b);
             long b = fst.b * sec.b;
@@ -56,7 +80,7 @@ namespace MatrixCalculator
             return CheckSign(a, b);
         }
 
-        private static Fraction SubtractFraction(Fraction fst, Fraction sec)
+        private static Fraction Subtract(Fraction fst, Fraction sec)
         {
             long a = (fst.a * sec.b) - (sec.a * fst.b);
             long b = fst.b * sec.b;
@@ -64,7 +88,7 @@ namespace MatrixCalculator
             return CheckSign(a, b);
         }
 
-        private static Fraction MultipleFraction(Fraction fst, Fraction sec)
+        private static Fraction Multiple(Fraction fst, Fraction sec)
         {
             long a = fst.a * sec.a;
             long b = fst.b * sec.b;
@@ -72,7 +96,7 @@ namespace MatrixCalculator
             return CheckSign(a, b);
         }
 
-        private static Fraction DivideFraction(Fraction fst, Fraction sec)
+        private static Fraction Divide(Fraction fst, Fraction sec)
         {
             long a = fst.a * sec.b;
             long b = fst.b * sec.a;

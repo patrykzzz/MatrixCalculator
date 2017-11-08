@@ -33,6 +33,11 @@ namespace MatrixCalculator
             return new Matrix<T>(Add(i, j));
         }
 
+        public static Matrix<T> operator -(Matrix<T> i, Matrix<T> j)
+        {
+            return new Matrix<T>(Subtract(i, j));
+        }
+
         public static Matrix<T> operator *(Matrix<T>i, Matrix<T> j)
         {
             return new Matrix<T>(Multiply(i, j));
@@ -63,6 +68,21 @@ namespace MatrixCalculator
                 for (int j = 0; j < numberOfColumns; j++)
                 {
                     matrix[i, j] = (dynamic)a.MatrixValues[i, j] + (dynamic)b.MatrixValues[i, j];
+                }
+            }
+            return matrix;
+        }
+
+        private static T[,] Subtract(Matrix<T> a, Matrix<T> b)
+        {
+            var numberOfRows = a.NumberOfRows;
+            var numberOfColumns = a.NumberOfColumns;
+            var matrix = new T[numberOfRows, numberOfColumns];
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                for (int j = 0; j < numberOfColumns; j++)
+                {
+                    matrix[i, j] = (dynamic)a.MatrixValues[i, j] - (dynamic)b.MatrixValues[i, j];
                 }
             }
             return matrix;

@@ -33,6 +33,20 @@ namespace MatrixCalculator
         }
 
         [Fact]
+        public void SubtractFraction_checkSubtractByNumer()
+        {
+            //Arrange
+            Fraction fst = new Fraction(7, 8);
+            long sec = 3;
+
+            //Act
+            var result = fst - sec;
+
+            //Assert
+            Assert.Equal("-17/8", result.Show());
+        }
+
+        [Fact]
         public void SubtractFraction_checkMinus()
         {
             //Arrange
@@ -89,6 +103,20 @@ namespace MatrixCalculator
         }
 
         [Fact]
+        public void DivideFraction_checkDivideByNumer()
+        {
+            //Arrange
+            Fraction fst = new Fraction(1, 2);
+            long sec = 5;
+
+            //Act
+            var result = fst / sec;
+
+            //Assert
+            Assert.Equal("1/10", result.Show());
+        }
+
+        [Fact]
         public void MultiplyFraction_checkMinuses()
         {
             //Arrange
@@ -114,6 +142,20 @@ namespace MatrixCalculator
 
             //Assert
             Assert.Equal("-6/15", result.Show());
+        }
+
+        [Fact]
+        public void MultiplyFraction_checkNultiplyByNumber()
+        {
+            //Arrange
+            Fraction fst = new Fraction(3, 5);
+            long sec = 6;
+
+            //Act
+            var result = fst * sec;
+
+            //Assert
+            Assert.Equal("18/5", result.Show());
         }
     }
 }
