@@ -17,5 +17,103 @@ namespace MatrixCalculator
             //Assert
             Assert.Equal("5/6", result.Show());
         }
+
+        [Fact]
+        public void SubtractFraction()
+        {
+            //Arrange
+            Fraction fst = new Fraction(7, 8);
+            Fraction sec = new Fraction(2, 5);
+
+            //Act
+            var result = fst - sec;
+
+            //Assert
+            Assert.Equal("19/40", result.Show());
+        }
+
+        [Fact]
+        public void SubtractFraction_checkMinus()
+        {
+            //Arrange
+            Fraction fst = new Fraction(2, 5);
+            Fraction sec = new Fraction(7, 8);
+
+            //Act
+            var result = fst - sec;
+
+            //Assert
+            Assert.Equal("-19/40", result.Show());
+        }
+
+        [Fact]
+        public void MultiplyFraction()
+        {
+            //Arrange
+            Fraction fst = new Fraction(3, 5);
+            Fraction sec = new Fraction(2, 3);
+
+            //Act
+            var result = fst * sec;
+
+            //Assert
+            Assert.Equal("6/15", result.Show());
+        }
+
+        [Fact]
+        public void MultiplyFraction_checkMinus()
+        {
+            //Arrange
+            Fraction fst = new Fraction(-3, 5);
+            Fraction sec = new Fraction(2, 3);
+
+            //Act
+            var result = fst * sec;
+
+            //Assert
+            Assert.Equal("-6/15", result.Show());
+        }
+
+        [Fact]
+        public void DivideFraction()
+        {
+            //Arrange
+            Fraction fst = new Fraction(1, 2);
+            Fraction sec = new Fraction(1, 3);
+
+            //Act
+            var result = fst / sec;
+
+            //Assert
+            Assert.Equal("3/2", result.Show());
+        }
+
+        [Fact]
+        public void MultiplyFraction_checkMinuses()
+        {
+            //Arrange
+            Fraction fst = new Fraction(-3, 5);
+            Fraction sec = new Fraction(2, -3);
+
+            //Act
+            var result = fst * sec;
+
+            //Assert
+            Assert.Equal("6/15", result.Show());
+        }
+
+        [Fact]
+        public void MultiplyFraction_checkDenominatorMinus()
+        {
+            //Arrange
+            Fraction fst = new Fraction(3, 5);
+            Fraction sec = new Fraction(2, -3);
+
+            //Act
+            var result = fst * sec;
+
+            //Assert
+            Assert.Equal("-6/15", result.Show());
+        }
     }
 }

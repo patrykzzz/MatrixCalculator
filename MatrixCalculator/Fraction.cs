@@ -13,8 +13,8 @@ namespace MatrixCalculator
 
         public Fraction(Fraction fraction)
         {
-            this.a = fraction.a;
-            this.b = fraction.b;
+            a = fraction.a;
+            b = fraction.b;
         }
 
         public Fraction(long a, long b)
@@ -35,17 +35,17 @@ namespace MatrixCalculator
 
         public static Fraction operator -(Fraction x, Fraction y)
         {
-            return null;
+            return new Fraction(SubtractFraction(x, y));
         }
 
         public static Fraction operator /(Fraction x, Fraction y)
         {
-            return null;
+            return new Fraction(DivideFraction(x, y));
         }
 
         public static Fraction operator *(Fraction x, Fraction y)
         {
-            return null;
+            return new Fraction(MultipleFraction(x, y));
         }
 
         private static Fraction AddFraction(Fraction fst, Fraction sec)
@@ -53,15 +53,39 @@ namespace MatrixCalculator
             long a = (fst.a * sec.b) + (sec.a * fst.b);
             long b = fst.b * sec.b;
 
-            return new Fraction(a, b);
+            return CheckSign(a, b);
         }
 
-        private static Fraction DeleteFraction(Fraction fst, Fraction sec)
+        private static Fraction SubtractFraction(Fraction fst, Fraction sec)
         {
             long a = (fst.a * sec.b) - (sec.a * fst.b);
             long b = fst.b * sec.b;
 
-            return new Fraction(a, b);
+            return CheckSign(a, b);
+        }
+
+        private static Fraction MultipleFraction(Fraction fst, Fraction sec)
+        {
+            long a = fst.a * sec.a;
+            long b = fst.b * sec.b;
+
+            return CheckSign(a, b);
+        }
+
+        private static Fraction DivideFraction(Fraction fst, Fraction sec)
+        {
+            long a = fst.a * sec.b;
+            long b = fst.b * sec.a;
+
+            return CheckSign(a, b);
+        }
+
+        private static Fraction CheckSign(long fst, long sec)
+        {
+            if (fst < 0 && sec < 0 || fst > 0 && sec < 0)
+                return new Fraction(-fst, -sec);
+            else
+                return new Fraction(fst, sec);
         }
     }
 }
