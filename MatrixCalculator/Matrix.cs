@@ -82,10 +82,53 @@ namespace MatrixCalculator
             {
                 for (int j = 0; j < numberOfColumns; j++)
                 {
-                    matrix[i, j] = (dynamic)a.MatrixValues[i, j] - (dynamic)b.MatrixValues[i, j];
+                    matrix[i, j] = (dynamic) a.MatrixValues[i, j] - (dynamic) b.MatrixValues[i, j];
                 }
             }
             return matrix;
         }
+
+        public T[] GaussWithoutChoise(Matrix<T> a, T[] vector)
+        {
+            T multiplier;
+            T sum;
+
+            T[] res = new T[a.NumberOfRows];
+
+            for (int i = 0; i < a.NumberOfRows - 1; i++)
+            {
+                for (int j = i; j < a.NumberOfRows; j++)
+                {
+                    multiplier = -(dynamic) a.MatrixValues[j, i] / (dynamic) a.MatrixValues[i, i];
+                    for (int k = i; k < a.NumberOfRows; k++)
+                    {
+                        a.MatrixValues[j, k] += multiplier * (dynamic) a.MatrixValues[i, k];
+                    }
+                    vector[j] -= (dynamic) vector[i] * multiplier;
+                }
+            }
+            
+            for (int i = a.NumberOfRows - 1; i >= 0; i--)
+            {
+                sum = (dynamic) vector[i];
+                for (int j = a.NumberOfRows - 1; j >= i + 1; j--)
+                {
+                    sum -= (dynamic) a.MatrixValues[i, j] * res[j];
+                }
+                res[i] = sum / (dynamic)a.MatrixValues[i, i];
+            }
+
+            return res;
+        }
     }
 }
+
+//T[,] temp = new T[a.NumberOfRows, a.NumberOfColumns];
+//
+//for (int i = 0; i<a.NumberOfColumns; i++)
+//{
+//for (int j = 0; j<a.NumberOfColumns; j++)
+//{
+//temp[i, j] = a.MatrixValues[i, j];
+//}
+//}

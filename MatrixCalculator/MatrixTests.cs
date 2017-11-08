@@ -96,5 +96,27 @@ namespace MatrixCalculator
                 { 9, 9, 9}
             });
         }
+
+        [Fact]
+        public void Gaus_ShouldReturnProperVector()
+        {
+            //Arrange
+            var x = new[,]
+            {
+                {4d, -2d, 4d, -2d},
+                {3d, 1d, 4d, 2d},
+                {2d, 4d, 2d, 1d},
+                {2d, -2d, 4d, 2d}
+            };
+            var a = new Matrix<double>(x);
+            double[] b = {8, 7, 10, 2};
+            double[] res = {-1, 2, 3, -2};
+
+            //Act
+            var result = a.GaussWithoutChoise(a, b);
+
+            //Assert
+            Assert.Equal(res, result);
+        }
     }
 }
