@@ -97,14 +97,14 @@ namespace MatrixCalculator
 
             for (int i = 0; i < a.NumberOfRows - 1; i++)
             {
-                for (int j = i; j < a.NumberOfRows; j++)
+                for (int j = i + 1; j < a.NumberOfRows; j++)
                 {
                     multiplier = -(dynamic) a.MatrixValues[j, i] / (dynamic) a.MatrixValues[i, i];
-                    for (int k = i; k < a.NumberOfRows; k++)
+                    for (int k = i + 1; k < a.NumberOfRows; k++)
                     {
                         a.MatrixValues[j, k] += multiplier * (dynamic) a.MatrixValues[i, k];
                     }
-                    vector[j] -= (dynamic) vector[i] * multiplier;
+                    vector[j] += (dynamic) vector[i] * multiplier;
                 }
             }
             
@@ -122,13 +122,3 @@ namespace MatrixCalculator
         }
     }
 }
-
-//T[,] temp = new T[a.NumberOfRows, a.NumberOfColumns];
-//
-//for (int i = 0; i<a.NumberOfColumns; i++)
-//{
-//for (int j = 0; j<a.NumberOfColumns; j++)
-//{
-//temp[i, j] = a.MatrixValues[i, j];
-//}
-//}
