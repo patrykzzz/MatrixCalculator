@@ -35,6 +35,11 @@ namespace MatrixCalculator
             return new Matrix<T>(Add(i, j));
         }
 
+        public static Matrix<T> operator -(Matrix<T> i, Matrix<T> j)
+        {
+            return new Matrix<T>(Subtract(i, j));
+        }
+
         public static Matrix<T> operator *(Matrix<T>i, Matrix<T> j)
         {
             return new Matrix<T>(Multiply(i, j));
@@ -83,6 +88,51 @@ namespace MatrixCalculator
                 }
             }
             return matrix;
+        }
+
+        private static T[,] Subtract(Matrix<T> a, Matrix<T> b)
+        {
+            var numberOfRows = a.NumberOfRows;
+            var numberOfColumns = a.NumberOfColumns;
+            var matrix = new T[numberOfRows, numberOfColumns];
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                for (int j = 0; j < numberOfColumns; j++)
+                {
+                    matrix[i, j] = (dynamic) a.MatrixValues[i, j] - (dynamic) b.MatrixValues[i, j];
+                }
+            }
+            return matrix;
+        }
+
+        public T[] GaussWithoutChoice(Matrix<T> a, T[] vector)
+        {
+            var res = new T[a.NumberOfRows];
+
+            for (int i = 0; i < a.NumberOfRows - 1; i++)
+            {
+                for (int j = i + 1; j < a.NumberOfRows; j++)
+                {
+                    T multiplier = -(dynamic) a.MatrixValues[j, i] / (dynamic) a.MatrixValues[i, i];
+                    for (int k = i + 1; k < a.NumberOfRows; k++)
+                    {
+                        a.MatrixValues[j, k] += multiplier * (dynamic) a.MatrixValues[i, k];
+                    }
+                    vector[j] += (dynamic) vector[i] * multiplier;
+                }
+            }
+            
+            for (int i = a.NumberOfRows - 1; i >= 0; i--)
+            {
+                T sum = (dynamic) vector[i];
+                for (int j = a.NumberOfRows - 1; j >= i + 1; j--)
+                {
+                    sum -= (dynamic) a.MatrixValues[i, j] * res[j];
+                }
+                res[i] = sum / (dynamic)a.MatrixValues[i, i];
+            }
+
+            return res;
         }
     }
 }
