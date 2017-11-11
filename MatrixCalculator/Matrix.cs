@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MatrixCalculator
 {
@@ -42,12 +44,27 @@ namespace MatrixCalculator
         {
             var numberOfRows = a.NumberOfRows;
             var numberOfColumns = a.NumberOfColumns;
-            var result = new T[a.NumberOfRows, a.NumberOfColumns];
+            var result = new T[a.NumberOfRows, b.NumberOfColumns];
             for (int i = 0; i < numberOfRows; i++)
             {
                 for (int j = 0; j < numberOfColumns; j++)
                 {
-                    result[i,j] = (dynamic)a.MatrixValues[i, j] * (dynamic)b.MatrixValues[i, j];
+                    var row = new T[numberOfColumns];
+                    for (int k = 0; k < numberOfColumns; k++)
+                    {
+                        row[k] = a.MatrixValues[i, k];
+                    }
+                    var values = new T[numberOfRows];
+                    for (int k = 0; k < numberOfRows; k++)
+                    {
+                        values[k] += (dynamic)b.MatrixValues[k, j] * (dynamic)row[k];
+                    }
+
+                    foreach (var value in values)
+                    {
+                        result[i, j] += (dynamic)value;
+                    }
+
                 }
             }
             return result;

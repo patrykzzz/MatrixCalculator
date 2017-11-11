@@ -58,12 +58,12 @@ namespace MatrixCalculator
             var result = a * b;
 
             //Assert
-            Assert.Equal(result.MatrixValues, new[,]
+            Assert.Equal(new[,]
             {
-                { 1, 1, 1},
-                { 4, 4, 4},
-                { 9, 9, 9}
-            });
+                { 6, 6, 6},
+                { 12, 12, 12},
+                { 18, 18, 18}
+            }, result.MatrixValues);
         }
 
     }
