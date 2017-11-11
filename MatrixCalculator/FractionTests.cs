@@ -5,157 +5,168 @@ namespace MatrixCalculator
     public class FractionTests
     {
         [Fact]
-        public void AddFraction()
+        public void Add_HasProperValues_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(1, 2);
-            Fraction sec = new Fraction(1, 3);
+            var first = new Fraction(1, 2);
+            var second = new Fraction(1, 3);
 
             //Act
-            var result = fst + sec;
+            var result = first + second;
 
             //Assert
-            Assert.Equal("5/6", result.Show());
+            Assert.Equal(5, result.Numeral);
+            Assert.Equal(6, result.Denominator);
         }
 
         [Fact]
-        public void SubtractFraction()
+        public void Subtract_HasProperValues_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(7, 8);
-            Fraction sec = new Fraction(2, 5);
+            var first = new Fraction(7, 8);
+            var second = new Fraction(2, 5);
 
             //Act
-            var result = fst - sec;
+            var result = first - second;
 
             //Assert
-            Assert.Equal("19/40", result.Show());
+            Assert.Equal(19, result.Numeral);
+            Assert.Equal(40, result.Denominator);
         }
 
         [Fact]
-        public void SubtractFraction_checkSubtractByNumer()
+        public void Subtract_HasNumber_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(7, 8);
-            long sec = 3;
+            var first = new Fraction(7, 8);
+            long second = 3;
 
             //Act
-            var result = fst - sec;
+            var result = first - second;
 
             //Assert
-            Assert.Equal("-17/8", result.Show());
+            Assert.Equal(-17, result.Numeral);
+            Assert.Equal(8, result.Denominator);
         }
 
         [Fact]
-        public void SubtractFraction_checkMinus()
+        public void Subtract_HasNegativeValues_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(2, 5);
-            Fraction sec = new Fraction(7, 8);
+            var first = new Fraction(2, 5);
+            var second = new Fraction(7, 8);
 
             //Act
-            var result = fst - sec;
+            var result = first - second;
 
             //Assert
-            Assert.Equal("-19/40", result.Show());
+            Assert.Equal(-19, result.Numeral);
+            Assert.Equal(40, result.Denominator);
         }
 
         [Fact]
-        public void MultiplyFraction()
+        public void Multiply_HasProperValues_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(3, 5);
-            Fraction sec = new Fraction(2, 3);
+            var first = new Fraction(3, 5);
+            var second = new Fraction(2, 3);
 
             //Act
-            var result = fst * sec;
+            var result = first * second;
 
             //Assert
-            Assert.Equal("6/15", result.Show());
+            Assert.Equal(6, result.Numeral);
+            Assert.Equal(15, result.Denominator);
         }
 
         [Fact]
-        public void MultiplyFraction_checkMinus()
+        public void Multiply_HasNegativeValue_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(-3, 5);
-            Fraction sec = new Fraction(2, 3);
+            var first = new Fraction(-3, 5);
+            var second = new Fraction(2, 3);
 
             //Act
-            var result = fst * sec;
+            var result = first * second;
 
             //Assert
-            Assert.Equal("-6/15", result.Show());
+            Assert.Equal(-6, result.Numeral);
+            Assert.Equal(15, result.Denominator);
         }
 
         [Fact]
-        public void DivideFraction()
+        public void Divide_HasProperValues_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(1, 2);
-            Fraction sec = new Fraction(1, 3);
+            var first = new Fraction(1, 2);
+            var second = new Fraction(1, 3);
 
             //Act
-            var result = fst / sec;
+            var result = first / second;
 
             //Assert
-            Assert.Equal("3/2", result.Show());
+            Assert.Equal(3, result.Numeral);
+            Assert.Equal(2, result.Denominator);
         }
 
         [Fact]
-        public void DivideFraction_checkDivideByNumer()
+        public void Divide_HasNumber_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(1, 2);
-            long sec = 5;
+            var first = new Fraction(1, 2);
+            long second = 5;
 
             //Act
-            var result = fst / sec;
+            var result = first / second;
 
             //Assert
-            Assert.Equal("1/10", result.Show());
+            Assert.Equal(1, result.Numeral);
+            Assert.Equal(10, result.Denominator);
         }
 
         [Fact]
-        public void MultiplyFraction_checkMinuses()
+        public void Multiply_HasNegativeValues_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(-3, 5);
-            Fraction sec = new Fraction(2, -3);
+            var first = new Fraction(-3, 5);
+            var second = new Fraction(2, -3);
 
             //Act
-            var result = fst * sec;
+            var result = first * second;
 
             //Assert
-            Assert.Equal("6/15", result.Show());
+            Assert.Equal(6, result.Numeral);
+            Assert.Equal(15, result.Denominator);
         }
 
         [Fact]
-        public void MultiplyFraction_checkDenominatorMinus()
+        public void Multiply_HasNegativeDenominator_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(3, 5);
-            Fraction sec = new Fraction(2, -3);
+            var first = new Fraction(3, 5);
+            var second = new Fraction(2, -3);
 
             //Act
-            var result = fst * sec;
+            var result = first * second;
 
             //Assert
-            Assert.Equal("-6/15", result.Show());
+            Assert.Equal(-6, result.Numeral);
+            Assert.Equal(15, result.Denominator);
         }
 
         [Fact]
-        public void MultiplyFraction_checkNultiplyByNumber()
+        public void Multiply_HasNumber_ShouldReturnProperResult()
         {
             //Arrange
-            Fraction fst = new Fraction(3, 5);
-            long sec = 6;
+            var first = new Fraction(3, 5);
+            long second = 6;
 
             //Act
-            var result = fst * sec;
+            var result = first * second;
 
             //Assert
-            Assert.Equal("18/5", result.Show());
+            Assert.Equal(18, result.Numeral);
+            Assert.Equal(5, result.Denominator);
         }
     }
 }

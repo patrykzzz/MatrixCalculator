@@ -88,18 +88,15 @@ namespace MatrixCalculator
             return matrix;
         }
 
-        public T[] GaussWithoutChoise(Matrix<T> a, T[] vector)
+        public T[] GaussWithoutChoice(Matrix<T> a, T[] vector)
         {
-            T multiplier;
-            T sum;
-
-            T[] res = new T[a.NumberOfRows];
+            var res = new T[a.NumberOfRows];
 
             for (int i = 0; i < a.NumberOfRows - 1; i++)
             {
                 for (int j = i + 1; j < a.NumberOfRows; j++)
                 {
-                    multiplier = -(dynamic) a.MatrixValues[j, i] / (dynamic) a.MatrixValues[i, i];
+                    T multiplier = -(dynamic) a.MatrixValues[j, i] / (dynamic) a.MatrixValues[i, i];
                     for (int k = i + 1; k < a.NumberOfRows; k++)
                     {
                         a.MatrixValues[j, k] += multiplier * (dynamic) a.MatrixValues[i, k];
@@ -110,7 +107,7 @@ namespace MatrixCalculator
             
             for (int i = a.NumberOfRows - 1; i >= 0; i--)
             {
-                sum = (dynamic) vector[i];
+                T sum = (dynamic) vector[i];
                 for (int j = a.NumberOfRows - 1; j >= i + 1; j--)
                 {
                     sum -= (dynamic) a.MatrixValues[i, j] * res[j];
