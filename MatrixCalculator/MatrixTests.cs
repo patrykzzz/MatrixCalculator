@@ -98,7 +98,7 @@ namespace MatrixCalculator
         }
 
         [Fact]
-        public void Gaus_ShouldReturnProperVector()
+        public void GaussWithoutChoice_ProperValues_ShouldReturnProperVector()
         {
             //Arrange
             var x = new[,]
@@ -113,7 +113,7 @@ namespace MatrixCalculator
             double[] res = {-1, 2, 3, -2};
 
             //Act
-            var result = a.GaussWithoutChoise(a, b);
+            var result = a.GaussWithoutChoice(a, b);
 
             //Assert
             Assert.Equal(res, result);

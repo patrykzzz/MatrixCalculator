@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MatrixCalculator
+﻿namespace MatrixCalculator
 {
     public class Fraction
     {
-        private long a; //numeral
-        private long b; //denominator
+        public long Numeral { get; }
+        public long Denominator { get; }
 
         public Fraction(Fraction fraction)
         {
-            a = fraction.a;
-            b = fraction.b;
+            Numeral = fraction.Numeral;
+            Denominator = fraction.Denominator;
         }
 
-        public Fraction(long a, long b)
+        public Fraction(long numeral, long denominator)
         {
-<<<<<<< Updated upstream
-            this.a = a;
-            this.b = b;
-=======
             var gcd = GreatestCommonDivisor(numeral, denominator);
 
             numeral /= gcd;
@@ -30,12 +20,11 @@ namespace MatrixCalculator
 
             Numeral = numeral;
             Denominator = denominator;
->>>>>>> Stashed changes
         }
 
-        public string Show()
+        public override string ToString()
         {
-            return a + "/" + b;
+            return Numeral + "/" + Denominator;
         }
 
         public static Fraction operator +(Fraction x, Fraction y)
@@ -55,107 +44,90 @@ namespace MatrixCalculator
 
         public static Fraction operator *(Fraction x, Fraction y)
         {
-            return new Fraction(Multiple(x, y));
+            return new Fraction(Multiply(x, y));
         }
 
         public static Fraction operator +(Fraction x, long num)
         {
-            Fraction y = new Fraction(num, 1);
+            var y = new Fraction(num, 1);
             return new Fraction(Add(x, y));
         }
 
         public static Fraction operator -(Fraction x, long num)
         {
-            Fraction y = new Fraction(num, 1);
+            var y = new Fraction(num, 1);
             return new Fraction(Subtract(x, y));
         }
 
         public static Fraction operator /(Fraction x, long num)
         {
-            Fraction y = new Fraction(num, 1);
+            var y = new Fraction(num, 1);
             return new Fraction(Divide(x, y));
         }
 
         public static Fraction operator *(Fraction x, long num)
         {
-            Fraction y = new Fraction(num, 1);
-            return new Fraction(Multiple(x, y));
+            var y = new Fraction(num, 1);
+            return new Fraction(Multiply(x, y));
         }
 
-        private static Fraction Add(Fraction fst, Fraction sec)
+        private static Fraction Add(Fraction first, Fraction second)
         {
-            long a = (fst.a * sec.b) + (sec.a * fst.b);
-            long b = fst.b * sec.b;
+            var a = first.Numeral * second.Denominator + second.Numeral * first.Denominator;
+            var b = first.Denominator * second.Denominator;
 
-<<<<<<< Updated upstream
-            return CheckSign(a, b);
-=======
             var gcd = GreatestCommonDivisor(a, b);
 
             a /= gcd;
             b /= gcd;
 
             return GetFractionSign(a, b);
->>>>>>> Stashed changes
         }
 
-        private static Fraction Subtract(Fraction fst, Fraction sec)
+        private static Fraction Subtract(Fraction first, Fraction second)
         {
-            long a = (fst.a * sec.b) - (sec.a * fst.b);
-            long b = fst.b * sec.b;
+            var a = first.Numeral * second.Denominator - second.Numeral * first.Denominator;
+            var b = first.Denominator * second.Denominator;
 
-<<<<<<< Updated upstream
-            return CheckSign(a, b);
-=======
             var gcd = GreatestCommonDivisor(a, b);
 
             a /= gcd;
             b /= gcd;
 
             return GetFractionSign(a, b);
->>>>>>> Stashed changes
         }
 
-        private static Fraction Multiple(Fraction fst, Fraction sec)
+        private static Fraction Multiply(Fraction first, Fraction second)
         {
-            long a = fst.a * sec.a;
-            long b = fst.b * sec.b;
+            var a = first.Numeral * second.Numeral;
+            var b = first.Denominator * second.Denominator;
 
-<<<<<<< Updated upstream
-            return CheckSign(a, b);
-=======
             var gcd = GreatestCommonDivisor(a, b);
 
             a /= gcd;
             b /= gcd;
 
             return GetFractionSign(a, b);
->>>>>>> Stashed changes
         }
 
-        private static Fraction Divide(Fraction fst, Fraction sec)
+        private static Fraction Divide(Fraction first, Fraction second)
         {
-            long a = fst.a * sec.b;
-            long b = fst.b * sec.a;
+            var a = first.Numeral * second.Denominator;
+            var b = first.Denominator * second.Numeral;
 
-<<<<<<< Updated upstream
-            return CheckSign(a, b);
-=======
             var gcd = GreatestCommonDivisor(a, b);
 
             a /= gcd;
             b /= gcd;
 
             return GetFractionSign(a, b);
->>>>>>> Stashed changes
         }
 
-        private static Fraction CheckSign(long fst, long sec)
+        private static Fraction GetFractionSign(long first, long second)
         {
-            if (fst < 0 && sec < 0 || fst > 0 && sec < 0)
-                return new Fraction(-fst, -sec);
-            else
-                return new Fraction(fst, sec);
+            if (first < 0 && second < 0 || first > 0 && second < 0)
+                return new Fraction(-first, -second);
+            return new Fraction(first, second);
         }
 
         private static long GreatestCommonDivisor(long a, long b)
