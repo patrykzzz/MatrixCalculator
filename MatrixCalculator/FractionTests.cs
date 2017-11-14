@@ -75,8 +75,8 @@ namespace MatrixCalculator
             var result = first * second;
 
             //Assert
-            Assert.Equal(6, result.Numeral);
-            Assert.Equal(15, result.Denominator);
+            Assert.Equal(2, result.Numeral);
+            Assert.Equal(5, result.Denominator);
         }
 
         [Fact]
@@ -90,8 +90,8 @@ namespace MatrixCalculator
             var result = first * second;
 
             //Assert
-            Assert.Equal(-6, result.Numeral);
-            Assert.Equal(15, result.Denominator);
+            Assert.Equal(-2, result.Numeral);
+            Assert.Equal(5, result.Denominator);
         }
 
         [Fact]
@@ -135,8 +135,8 @@ namespace MatrixCalculator
             var result = first * second;
 
             //Assert
-            Assert.Equal(6, result.Numeral);
-            Assert.Equal(15, result.Denominator);
+            Assert.Equal(2, result.Numeral);
+            Assert.Equal(5, result.Denominator);
         }
 
         [Fact]
@@ -150,8 +150,8 @@ namespace MatrixCalculator
             var result = first * second;
 
             //Assert
-            Assert.Equal(-6, result.Numeral);
-            Assert.Equal(15, result.Denominator);
+            Assert.Equal(-2, result.Numeral);
+            Assert.Equal(5, result.Denominator);
         }
 
         [Fact]

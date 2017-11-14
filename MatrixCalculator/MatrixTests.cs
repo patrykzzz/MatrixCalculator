@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Diagnostics;
+using Xunit;
 
 namespace MatrixCalculator
 {

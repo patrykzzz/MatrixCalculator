@@ -1,4 +1,6 @@
-﻿namespace MatrixCalculator
+﻿using System.Runtime.InteropServices;
+
+namespace MatrixCalculator
 {
     public class Fraction
     {
@@ -13,13 +15,10 @@
 
         public Fraction(long numeral, long denominator)
         {
-            var gcd = GreatestCommonDivisor(numeral, denominator);
+            var fraction = ReduceFraction(numeral, denominator);   
 
-            numeral /= gcd;
-            denominator /= gcd;
-
-            Numeral = numeral;
-            Denominator = denominator;
+            Numeral = fraction.numeral;
+            Denominator = fraction.denominator;
         }
 
         public override string ToString()
@@ -76,12 +75,9 @@
             var a = first.Numeral * second.Denominator + second.Numeral * first.Denominator;
             var b = first.Denominator * second.Denominator;
 
-            var gcd = GreatestCommonDivisor(a, b);
+            var fraction = ReduceFraction(a, b);
 
-            a /= gcd;
-            b /= gcd;
-
-            return GetFractionSign(a, b);
+            return GetFractionSign(fraction.numeral, fraction.denominator);
         }
 
         private static Fraction Subtract(Fraction first, Fraction second)
@@ -89,12 +85,9 @@
             var a = first.Numeral * second.Denominator - second.Numeral * first.Denominator;
             var b = first.Denominator * second.Denominator;
 
-            var gcd = GreatestCommonDivisor(a, b);
+            var fraction = ReduceFraction(a, b);
 
-            a /= gcd;
-            b /= gcd;
-
-            return GetFractionSign(a, b);
+            return GetFractionSign(fraction.numeral, fraction.denominator);
         }
 
         private static Fraction Multiply(Fraction first, Fraction second)
@@ -102,12 +95,9 @@
             var a = first.Numeral * second.Numeral;
             var b = first.Denominator * second.Denominator;
 
-            var gcd = GreatestCommonDivisor(a, b);
+            var fraction = ReduceFraction(a, b);
 
-            a /= gcd;
-            b /= gcd;
-
-            return GetFractionSign(a, b);
+            return GetFractionSign(fraction.numeral, fraction.denominator);
         }
 
         private static Fraction Divide(Fraction first, Fraction second)
@@ -115,12 +105,9 @@
             var a = first.Numeral * second.Denominator;
             var b = first.Denominator * second.Numeral;
 
-            var gcd = GreatestCommonDivisor(a, b);
+            var fraction = ReduceFraction(a, b);
 
-            a /= gcd;
-            b /= gcd;
-
-            return GetFractionSign(a, b);
+            return GetFractionSign(fraction.numeral, fraction.denominator);
         }
 
         private static Fraction GetFractionSign(long first, long second)
@@ -139,6 +126,18 @@
                 a = tmp;
             }
             return a;
+        }
+
+        public static (long numeral, long denominator) ReduceFraction(long numeral, long denominator)
+        {
+            long gcd;
+            while ((gcd = GreatestCommonDivisor(numeral, denominator)) != 1)
+            {
+                numeral /= gcd;
+                denominator /= gcd;
+            }
+
+            return (numeral, denominator);
         }
     }
 }
