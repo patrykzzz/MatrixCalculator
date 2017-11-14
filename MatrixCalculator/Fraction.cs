@@ -19,8 +19,18 @@ namespace MatrixCalculator
 
         public Fraction(long a, long b)
         {
+<<<<<<< Updated upstream
             this.a = a;
             this.b = b;
+=======
+            var gcd = GreatestCommonDivisor(numeral, denominator);
+
+            numeral /= gcd;
+            denominator /= gcd;
+
+            Numeral = numeral;
+            Denominator = denominator;
+>>>>>>> Stashed changes
         }
 
         public string Show()
@@ -77,7 +87,16 @@ namespace MatrixCalculator
             long a = (fst.a * sec.b) + (sec.a * fst.b);
             long b = fst.b * sec.b;
 
+<<<<<<< Updated upstream
             return CheckSign(a, b);
+=======
+            var gcd = GreatestCommonDivisor(a, b);
+
+            a /= gcd;
+            b /= gcd;
+
+            return GetFractionSign(a, b);
+>>>>>>> Stashed changes
         }
 
         private static Fraction Subtract(Fraction fst, Fraction sec)
@@ -85,7 +104,16 @@ namespace MatrixCalculator
             long a = (fst.a * sec.b) - (sec.a * fst.b);
             long b = fst.b * sec.b;
 
+<<<<<<< Updated upstream
             return CheckSign(a, b);
+=======
+            var gcd = GreatestCommonDivisor(a, b);
+
+            a /= gcd;
+            b /= gcd;
+
+            return GetFractionSign(a, b);
+>>>>>>> Stashed changes
         }
 
         private static Fraction Multiple(Fraction fst, Fraction sec)
@@ -93,7 +121,16 @@ namespace MatrixCalculator
             long a = fst.a * sec.a;
             long b = fst.b * sec.b;
 
+<<<<<<< Updated upstream
             return CheckSign(a, b);
+=======
+            var gcd = GreatestCommonDivisor(a, b);
+
+            a /= gcd;
+            b /= gcd;
+
+            return GetFractionSign(a, b);
+>>>>>>> Stashed changes
         }
 
         private static Fraction Divide(Fraction fst, Fraction sec)
@@ -101,7 +138,16 @@ namespace MatrixCalculator
             long a = fst.a * sec.b;
             long b = fst.b * sec.a;
 
+<<<<<<< Updated upstream
             return CheckSign(a, b);
+=======
+            var gcd = GreatestCommonDivisor(a, b);
+
+            a /= gcd;
+            b /= gcd;
+
+            return GetFractionSign(a, b);
+>>>>>>> Stashed changes
         }
 
         private static Fraction CheckSign(long fst, long sec)
@@ -110,6 +156,17 @@ namespace MatrixCalculator
                 return new Fraction(-fst, -sec);
             else
                 return new Fraction(fst, sec);
+        }
+
+        private static long GreatestCommonDivisor(long a, long b)
+        {
+            while (b != 0)
+            {
+                long tmp = b;
+                b = a % b;
+                a = tmp;
+            }
+            return a;
         }
     }
 }

@@ -118,5 +118,26 @@ namespace MatrixCalculator
             //Assert
             Assert.Equal(res, result);
         }
+
+        [Fact]
+        public void MultiplyByVector_ShouldReturnProperVector() 
+        {
+            //Arrange
+            var x = new[,]
+            {
+                {3, 1, 0, 3},
+                {2, 4, 7, 0},
+                {-1, 2, 3, 4},
+            };
+            var a = new Matrix<int>(x);
+            int[] res = {7, 13, 8};
+            int[] b = {1, 1, 1, 1};
+
+            //Act
+            var result = a * b;
+            
+            //Assert
+            Assert.Equal(res, result);
+        }
     }
 }

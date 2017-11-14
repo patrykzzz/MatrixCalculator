@@ -15,7 +15,13 @@ namespace MatrixCalculator
             var result = fst + sec;
 
             //Assert
+<<<<<<< Updated upstream
             Assert.Equal("5/6", result.Show());
+=======
+            Assert.Equal(5, result.Numeral);
+            Assert.Equal(6, result.Denominator);
+            
+>>>>>>> Stashed changes
         }
 
         [Fact]
@@ -156,6 +162,21 @@ namespace MatrixCalculator
 
             //Assert
             Assert.Equal("18/5", result.Show());
+        }
+
+        [Fact]
+        public void Operations_CheckReduce_ShouldReturnProperResult()
+        {
+            //Arrange
+            var first = new Fraction(1024*1024, 2048*2048);
+            var second = new Fraction(1, 1);
+
+            //Act
+            var result = first * second;
+
+            //Assert
+            Assert.Equal(1, result.Numeral);
+            Assert.Equal(4, result.Denominator);
         }
     }
 }
