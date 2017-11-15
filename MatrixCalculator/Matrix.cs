@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MatrixCalculator
 {
@@ -201,5 +199,22 @@ namespace MatrixCalculator
             }
             return index;
         }
+
+        public void ResetAllColumsAbove(Matrix<T> matrix, T[] vector, int rowNumber, int columnNumber)
+        {
+            for (int k = 0; k < rowNumber; k++)
+            {
+                for (int i = columnNumber - 1; i >= 0; i--)
+                {
+                    var multiplier = -(dynamic)matrix.MatrixValues[k, columnNumber] / matrix.MatrixValues[rowNumber, columnNumber];
+                    for (int j = 0; j < matrix.NumberOfColumns; j++)
+                    {
+                        matrix.MatrixValues[k, j] += multiplier * matrix.MatrixValues[rowNumber, j];
+                    }
+                    vector[k] += vector[rowNumber] * multiplier;
+                }
+            }
+        }
+
     }
 }

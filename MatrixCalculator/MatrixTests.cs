@@ -31,9 +31,9 @@ namespace MatrixCalculator
             //Assert
             Assert.Equal(result.MatrixValues, new[,]
             {
-                { 2, 2, 2},
-                { 4, 4, 4},
-                { 6, 6, 6}
+                {2, 2, 2},
+                {4, 4, 4},
+                {6, 6, 6}
             });
         }
 
@@ -62,9 +62,9 @@ namespace MatrixCalculator
             //Assert
             Assert.Equal(result.MatrixValues, new[,]
             {
-                { 0, 0, 0},
-                { -1, 4, 2},
-                { -2, -1, 1}
+                {0, 0, 0},
+                {-1, 4, 2},
+                {-2, -1, 1}
             });
         }
 
@@ -93,9 +93,9 @@ namespace MatrixCalculator
             //Assert
             Assert.Equal(new[,]
             {
-                { 6, 6, 6},
-                { 12, 12, 12},
-                { 18, 18, 18}
+                {6, 6, 6},
+                {12, 12, 12},
+                {18, 18, 18}
             }, result.MatrixValues);
         }
 
@@ -129,7 +129,7 @@ namespace MatrixCalculator
             {
                 {3, 1, 0, 3},
                 {2, 4, 7, 0},
-                {-1, 2, 3, 4},
+                {-1, 2, 3, 4}
             };
             var a = new Matrix<int>(x);
             int[] res = { 7, 13, 8 };
@@ -146,13 +146,13 @@ namespace MatrixCalculator
         public void SwapRows_ProperMatrixAndVector_ShouldReturnProperResult()
         {
             //Arrange
-            var matrixValues = new double[,]
+            var matrixValues = new[,]
             {
-                { 0.1, 0.2, 0.3, 0.4},
-                { 0.2, 0.4, 0.5, 0.3},
-                { 0.3, 0.5, 0.6, 0.7}
+                {0.1, 0.2, 0.3, 0.4},
+                {0.2, 0.4, 0.5, 0.3},
+                {0.3, 0.5, 0.6, 0.7}
             };
-            var vector = new double[]
+            var vector = new[]
             {
                 0.1, 0.2, 0.3
             };
@@ -164,15 +164,42 @@ namespace MatrixCalculator
             matrix.SwapRows(ref vector, ref matrixValues, numberOfFirstRow, numberOfSecondRow);
 
             //Assert
-            Assert.Equal(new double[,]
+            Assert.Equal(new[,]
             {
-                { 0.3, 0.5, 0.6, 0.7},
-                { 0.2, 0.4, 0.5, 0.3},
-                { 0.1, 0.2, 0.3, 0.4}
+                {0.3, 0.5, 0.6, 0.7},
+                {0.2, 0.4, 0.5, 0.3},
+                {0.1, 0.2, 0.3, 0.4}
             }, matrixValues);
-            Assert.Equal(new double[]
+            Assert.Equal(new[]
             {
                 0.3, 0.2, 0.1
+            }, vector);
+        }
+
+        [Fact]
+        public void ResetAllColumsAbove_HasGivenValues_ResetsColumnsProperly()
+        {
+            //Arrange
+            var matrix = new Matrix<double>(new[,] {
+                { 1.0, 1.0, 1.0, 0.5 },
+                { 1.0, 1.0, 1.0, 1.0 },
+                { 2.0, 2.0, 2.0, 2.0 }
+            });
+            var vector = new[] {1.0, 1.0, 1.0};
+
+            //Act
+            matrix.ResetAllColumsAbove(matrix, vector, 2, 3);
+
+            //Assert
+            Assert.Equal(new [,]
+            {
+                {0.5, 0.5, 0.5, 0 },
+                {0, 0, 0, 0 },
+                {2, 2, 2, 2 }
+            }, matrix.MatrixValues);
+            Assert.Equal(new []
+            {
+                0.75, 0.5, 1.0
             }, vector);
         }
     }
