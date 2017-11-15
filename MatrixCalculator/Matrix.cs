@@ -173,5 +173,33 @@ namespace MatrixCalculator
 
             return res;
         }
+
+        public void SwapRows(ref T[] additionalColumn, ref T[,] matrixValues , int numberOfFirstRow, int numberOfSecondRow)
+        {
+            for (int i = 0; i < matrixValues.GetLength(1); i++)
+            {
+                var temp = matrixValues[numberOfFirstRow, i];
+                matrixValues[numberOfFirstRow, i] = matrixValues[numberOfSecondRow, i];
+                matrixValues[numberOfSecondRow, i] = temp;
+            }
+            var oldValue = additionalColumn[numberOfFirstRow];
+            additionalColumn[numberOfFirstRow] = additionalColumn[numberOfSecondRow];
+            additionalColumn[numberOfSecondRow] = oldValue;
+        }
+
+        private int FindIndexOfRowWithGreatestNumberInGivenColumn(int columnNumber)
+        {
+            var greatestColumn = MatrixValues[0, columnNumber];
+            var index = 0;
+            for (int i = 0; i < NumberOfRows; i++)
+            {
+                if ((dynamic) MatrixValues[i, columnNumber] > greatestColumn)
+                {
+                    greatestColumn = MatrixValues[i, columnNumber];
+                    index = i;
+                }
+            }
+            return index;
+        }
     }
 }

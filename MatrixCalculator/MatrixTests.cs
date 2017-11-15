@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Xunit;
 
 namespace MatrixCalculator
@@ -9,14 +10,14 @@ namespace MatrixCalculator
         public void Add_IntValues_ShouldReturnProperMatrix()
         {
             //Arrange
-            var x = new [,]
+            var x = new[,]
             {
                 {1, 1, 1},
                 {2, 2, 2},
                 {3, 3, 3}
             };
             var a = new Matrix<int>(x);
-            var y = new [,]
+            var y = new[,]
             {
                 {1, 1, 1},
                 {2, 2, 2},
@@ -28,7 +29,7 @@ namespace MatrixCalculator
             var result = a + b;
 
             //Assert
-            Assert.Equal(result.MatrixValues, new [,]
+            Assert.Equal(result.MatrixValues, new[,]
             {
                 { 2, 2, 2},
                 { 4, 4, 4},
@@ -110,8 +111,8 @@ namespace MatrixCalculator
                 {2d, -2d, 4d, 2d}
             };
             var a = new Matrix<double>(x);
-            double[] b = {8, 7, 10, 2};
-            double[] res = {-1, 2, 3, -2};
+            double[] b = { 8, 7, 10, 2 };
+            double[] res = { -1, 2, 3, -2 };
 
             //Act
             var result = a.GaussWithoutChoice(a, b);
@@ -121,7 +122,7 @@ namespace MatrixCalculator
         }
 
         [Fact]
-        public void MultiplyByVector_ShouldReturnProperVector() 
+        public void MultiplyByVector_ShouldReturnProperVector()
         {
             //Arrange
             var x = new[,]
@@ -131,14 +132,48 @@ namespace MatrixCalculator
                 {-1, 2, 3, 4},
             };
             var a = new Matrix<int>(x);
-            int[] res = {7, 13, 8};
-            int[] b = {1, 1, 1, 1};
+            int[] res = { 7, 13, 8 };
+            int[] b = { 1, 1, 1, 1 };
 
             //Act
             var result = a * b;
-            
+
             //Assert
             Assert.Equal(res, result);
+        }
+
+        [Fact]
+        public void SwapRows_ProperMatrixAndVector_ShouldReturnProperResult()
+        {
+            //Arrange
+            var matrixValues = new double[,]
+            {
+                { 0.1, 0.2, 0.3, 0.4},
+                { 0.2, 0.4, 0.5, 0.3},
+                { 0.3, 0.5, 0.6, 0.7}
+            };
+            var vector = new double[]
+            {
+                0.1, 0.2, 0.3
+            };
+            var numberOfFirstRow = 0;
+            var numberOfSecondRow = 2;
+            var matrix = new Matrix<double>(matrixValues);
+
+            //Act
+            matrix.SwapRows(ref vector, ref matrixValues, numberOfFirstRow, numberOfSecondRow);
+
+            //Assert
+            Assert.Equal(new double[,]
+            {
+                { 0.3, 0.5, 0.6, 0.7},
+                { 0.2, 0.4, 0.5, 0.3},
+                { 0.1, 0.2, 0.3, 0.4}
+            }, matrixValues);
+            Assert.Equal(new double[]
+            {
+                0.3, 0.2, 0.1
+            }, vector);
         }
     }
 }
