@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MatrixCalculator
 {
-    public class Matrix<T> where T : struct
+    public class Matrix<T> 
     {
         public int NumberOfRows => MatrixValues.GetLength(0);
         public int NumberOfColumns => MatrixValues.GetLength(1);
@@ -16,15 +16,34 @@ namespace MatrixCalculator
             MatrixValues = matrix;
         }
 
-        private T[,] InitializeWithRandomNumbers()
+        public Matrix(int rows, int columns)
+        {
+            MatrixValues = InitializeWithRandomNumbers(rows, columns);
+        }
+
+        private T[,] InitializeWithRandomNumbers(int rows, int columns)
         {
             var random = new Random();
-            var matrix = new T[NumberOfRows, NumberOfColumns];
-            for (int i = 0; i < NumberOfRows; i++)
+            var matrix = new T[rows, columns];
+
+            if (matrix is double[,] || matrix is float[,])
             {
-                for (int j = 0; j < NumberOfColumns; j++)
+                for (int i = 0; i < rows; i++)
                 {
-                    matrix[i, j] = (dynamic)random.Next(Int32.MinValue, Int32.MaxValue);
+                    for (int j = 0; j < columns; j++)
+                    {
+                        matrix[i, j] = (dynamic) random.NextDouble() * random.Next(Int32.MinValue, Int32.MaxValue);
+                    }
+                }
+            }
+            else if (matrix is Fraction[,])
+            {
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < columns; j++)
+                    {
+                        matrix[i, j] = (dynamic) new Fraction(random.Next(Int32.MinValue, Int32.MaxValue), random.Next(Int32.MinValue, Int32.MaxValue));
+                    }
                 }
             }
             return matrix;
@@ -43,6 +62,11 @@ namespace MatrixCalculator
         public static Matrix<T> operator *(Matrix<T>i, Matrix<T> j)
         {
             return new Matrix<T>(Multiply(i, j));
+        }
+
+        public static T[] operator *(Matrix<T> a, T[] vector)
+        {
+            return MultiplyByVector(a, vector);
         }
 
         private static T[,] Multiply(Matrix<T> a, Matrix<T> b)
@@ -70,6 +94,21 @@ namespace MatrixCalculator
                         result[i, j] += (dynamic)value;
                     }
 
+                }
+            }
+            return result;
+        }
+
+        private static T[] MultiplyByVector(Matrix<T> a, T[] vector)
+        {
+            var numberOfRows = a.NumberOfRows;
+            var numberOfColumns = a.NumberOfColumns;
+            var result = new T[a.NumberOfRows];
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                for (int j = 0; j < numberOfColumns; j++)
+                {
+                    result[i] += (dynamic)a.MatrixValues[i, j] * vector[j];
                 }
             }
             return result;
