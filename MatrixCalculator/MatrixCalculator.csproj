@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="File.cs" />
     <Compile Include="Fraction.cs" />
     <Compile Include="FractionTests.cs" />
     <Compile Include="Matrix.cs" />
