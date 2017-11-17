@@ -8,13 +8,26 @@ namespace MatrixCalculator
 {
     public class Program
     {
-       private readonly StreamWriter _firstMatrixFile = new StreamWriter("FirstMatrixData.txt");
-       private readonly StreamWriter _secondMatrixFile = new StreamWriter("SecondMatrixData.txt");
-       private readonly StreamWriter _thirdMatrixFile = new StreamWriter("ThirdMatrixData.txt");
-       private readonly StreamWriter _vectorFile = new StreamWriter("VectorData.txt");
-       private readonly StreamWriter _firstOp = new StreamWriter("Res1DataDoubleCs.txt");
-       private readonly StreamWriter _secOp = new StreamWriter("Res2DataDoubleCs.txt");
-       private readonly StreamWriter _thrdOp = new StreamWriter("Res3DataDoubleCs.txt");
+        
+        private readonly StreamReader _firstMatrixDouble = new StreamReader("../../../Output/FirstMatrixDataDouble.txt");
+        private readonly StreamReader _secondMatrixDouble = new StreamReader("../../../Output/SecondMatrixDataDouble.txt");
+        private readonly StreamReader _thirdMatrixDouble = new StreamReader("../../../Output/ThirdMatrixDataDouble.txt");
+        private readonly StreamReader _vectorDouble = new StreamReader("../../../Output/VectorDataDouble.txt");
+        private readonly StreamWriter _firstOpDouble = new StreamWriter("../../../Output/Res1DataDoubleCs.txt");
+        private readonly StreamWriter _secOpDouble = new StreamWriter("../../../Output/Res2DataDoubleCs.txt");
+        private readonly StreamWriter _thrdOpDouble = new StreamWriter("../../../Output/Res3DataDoubleCs.txt");
+        private readonly StreamWriter _partialDouble = new StreamWriter("../../../Output/PartialDataDoubleCs.txt");
+        private readonly StreamWriter _fullDouble = new StreamWriter("../../../Output/FullDataDoubleCs.txt");
+
+        private readonly StreamReader _firstMatrixFloat = new StreamReader("../../../Output/FirstMatrixDataFloat.txt");
+        private readonly StreamReader _secondMatrixFloat = new StreamReader("../../../Output/SecondMatrixDataFloat.txt");
+        private readonly StreamReader _thirdMatrixFloat = new StreamReader("../../../Output/ThirdMatrixDataFloat.txt");
+        private readonly StreamReader _vectorFloat = new StreamReader("../../../Output/VectorDataFloat.txt");
+        private readonly StreamWriter _firstOpFloat = new StreamWriter("../../../Output/Res1DataFloatCs.txt");
+        private readonly StreamWriter _secOpFloat = new StreamWriter("../../../Output/Res2DataFloatCs.txt");
+        private readonly StreamWriter _thrdOpFloat = new StreamWriter("../../../Output/Res3DataFloatCs.txt");
+        private readonly StreamWriter _partialFloat = new StreamWriter("../../../Output/PartialDataFloatCs.txt");
+        private readonly StreamWriter _fullFloat = new StreamWriter("../../../Output/FullDataFloatCs.txt");
 
 
         public static void Main(string[] args)
@@ -25,53 +38,80 @@ namespace MatrixCalculator
             culture.NumberFormat.NumberDecimalSeparator = ".";
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 
-            program.CreateFillMatrixAndWriteToFileDouble(5, 5);
-            program.CreateFillMatrixAndWriteToFileDouble(10, 5);
-            //program.CreateFillMatrixAndWriteToFileDouble(15);
+            int multiplier = 5;
+            for (int i = multiplier; i < 100; i += multiplier)
+            {
+                program.CreateFillMatrixAndWriteToFileDouble(i);
+            }
 
+            program._firstMatrixDouble.Close();
+            program._firstMatrixDouble.Close();
+            program._secondMatrixDouble.Close();
+            program._thirdMatrixDouble.Close();
+            program._vectorDouble.Close();
+            program._firstOpDouble.Close();
+            program._secOpDouble.Close();
+            program._thrdOpDouble.Close();
+            program._partialDouble.Close();
+            program._fullDouble.Close();
 
-            program._firstMatrixFile.Close();
-//            program._secondMatrixFile.Close();
-//
-//            program._vectorFile.Close();
-            program._firstOp.Close();
-            program._secOp.Close();
-            program._thrdOp.Close();
-            double x = 0.3124323d;
-            Console.WriteLine(x);
+            program._firstMatrixFloat.Close();
+            program._firstMatrixFloat.Close();
+            program._secondMatrixFloat.Close();
+            program._thirdMatrixFloat.Close();
+            program._vectorFloat.Close();
+            program._firstOpFloat.Close();
+            program._secOpFloat.Close();
+            program._thrdOpFloat.Close();
+            program._partialFloat.Close();
+            program._fullFloat.Close();
+
+            Console.WriteLine("Program ended its operation");
             Console.ReadKey();
-
-           
         }
 
-        private void CreateFillMatrixAndWriteToFileDouble(int size, int multiple)
+        private void CreateFillMatrixAndWriteToFileDouble(int size)
         {
             var file = new File<double>();
 
-            var matrixA = new Matrix<double>(file.ReadDoubleMatrixFromFile("FirstMatrixDataDouble", size, multiple));
-            var matrixB = new Matrix<double>(file.ReadDoubleMatrixFromFile("SecondMatrixDataDouble", size, multiple));
-            var matrixC = new Matrix<double>(file.ReadDoubleMatrixFromFile("ThirdMatrixDataDouble", size, multiple));
-            double[] vector = file.FillVectorDouble("VectorDataDouble", size, multiple);
-            //
-            file.WriteToFile(matrixA, size, _firstMatrixFile);
-//            file.WriteToFile(matrixB, size, _secondMatrixFile);
-//            file.WriteToFile(matrixC, size, _thirdMatrixFile);
-//            file.WriteToFile(vector, size,  _vectorFile);
-//
-//            var res1 = matrixA * vector;
-//            var res2 = (matrixA + matrixB + matrixC) * vector;
-//            var res3 = matrixA * (matrixB * matrixC);
+            var matrixA = new Matrix<double>(file.ReadMatrixFromFile(size, _firstMatrixDouble));
+            var matrixB = new Matrix<double>(file.ReadMatrixFromFile(size, _secondMatrixDouble));
+            var matrixC = new Matrix<double>(file.ReadMatrixFromFile(size, _thirdMatrixDouble));
+            double[] vector = file.ReadVectorFromFile(size, _vectorDouble);
+            
+            var res1 = matrixA * vector;
+            var res2 = (matrixA + matrixB + matrixC) * vector;
+            var res3 = matrixA * (matrixB * matrixC);
 
+            //gauss?
+            //pivLuDouble
+            //FullPivLuDouble
 
-//            file.WriteToFile(res1, size, _firstOp);
-//            file.WriteToFile(res2, size, _secOp);
-//            file.WriteToFile(res3, size, _thrdOp);
-
+            file.WriteToFile(res1, size, _firstOpDouble);
+            file.WriteToFile(res2, size, _secOpDouble);
+            file.WriteToFile(res3, size, _thrdOpDouble);
         }
 
         private void CreateFillMatrixAndWriteToFileFloat(int size)
         {
+            var file = new File<float>();
 
+            var matrixA = new Matrix<float>(file.ReadMatrixFromFile(size, _firstMatrixFloat));
+            var matrixB = new Matrix<float>(file.ReadMatrixFromFile(size, _secondMatrixFloat));
+            var matrixC = new Matrix<float>(file.ReadMatrixFromFile(size, _thirdMatrixFloat));
+            float[] vector = file.ReadVectorFromFile(size, _vectorFloat);
+
+            var res1 = matrixA * vector;
+            var res2 = (matrixA + matrixB + matrixC) * vector;
+            var res3 = matrixA * (matrixB * matrixC);
+
+            //gauss?
+            //pivLuFloat
+            //FullPivLuFloat
+
+            file.WriteToFile(res1, size, _firstOpFloat);
+            file.WriteToFile(res2, size, _secOpFloat);
+            file.WriteToFile(res3, size, _thrdOpFloat);
         }
 
         private void CreateFillMatrixAndWriteToFileFraction(int size)
