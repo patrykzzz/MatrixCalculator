@@ -17,6 +17,7 @@ namespace MatrixCalculator
                 {
                     sw.Write(matrix.MatrixValues[i, j] + " ");
                 }
+                sw.WriteLine();
             }
             sw.WriteLine();
         }

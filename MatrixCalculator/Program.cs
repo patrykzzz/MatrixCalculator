@@ -19,20 +19,22 @@ namespace MatrixCalculator
         {
             var program = new Program();
 
-            program.CreateFillMatrixAndWriteToFileDouble(5);
-            program.CreateFillMatrixAndWriteToFileDouble(10);
-            program.CreateFillMatrixAndWriteToFileDouble(15);
+            //program.CreateFillMatrixAndWriteToFileDouble(5);
+            program.CreateFillMatrixAndWriteToFileDouble(3);
+            //program.CreateFillMatrixAndWriteToFileDouble(15);
 
 
             program._firstMatrixFile.Close();
             program._secondMatrixFile.Close();
+
             program._vectorFile.Close();
             program._firstOp.Close();
             program._secOp.Close();
             program._thrdOp.Close();
-
+            
             Console.ReadKey();
 
+           
         }
 
         private void CreateFillMatrixAndWriteToFileDouble(int size)
@@ -53,7 +55,6 @@ namespace MatrixCalculator
             var res2 = (matrixA + matrixB + matrixC) * vector;
             var res3 = matrixA * (matrixB * matrixC);
 
-            Console.Write(res1);
 
             file.WriteToFile(res1, size, _firstOp);
             file.WriteToFile(res2, size, _secOp);
