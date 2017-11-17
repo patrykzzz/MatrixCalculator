@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MatrixCalculator
 {
@@ -31,27 +27,61 @@ namespace MatrixCalculator
             sw.WriteLine();
         }
 
-        public T[] FillVectorWithRandom(int size)
+        public double[] ReadVectorFromFile(string filename, int size, int multiple)
         {
-            var vector = new T[size];
-            var random = new Random();
+            var vector = new double[size];
+            StreamReader sr = new StreamReader("../../../" + filename + ".txt");
 
-            if (vector is double[] || vector is float[])
+            string line = "";
+
+            for (int i = 0; i < IgnorePreviousLines(size, multiple); i++)
             {
-                for (int i = 0; i < size; i++)
-                {
-                    vector[i] = (dynamic)random.NextDouble() * random.Next(Int32.MinValue, Int32.MaxValue);
-                }
+                line = sr.ReadLine();
             }
-            else if (vector is Fraction[])
+            line = sr.ReadLine();
+            string[] splitLine = line.Split(' ');
+
+            for (int j = 0; j < size; j++)
             {
-                for (int i = 0; i < size; i++)
-                {
-                    vector[i] = (dynamic)new Fraction(random.Next(Int32.MinValue, Int32.MaxValue), random.Next(Int32.MinValue, Int32.MaxValue));
-                }
+                vector[j] = double.Parse(splitLine[j], System.Globalization.CultureInfo.InvariantCulture);
             }
 
             return vector;
+        }
+
+        public double[,] ReadDoubleMatrixFromFile(string filename, int size, int multiple)
+        {
+            double[,] matrix = new double[size, size];
+            StreamReader sr = new StreamReader("../../../" + filename + ".txt");
+
+            string line = "";
+
+            for (int i = 0; i < IgnorePreviousLines(size, multiple); i++)
+            {
+                line = sr.ReadLine();
+            }
+            for (int i = 0; i < size; i++)
+            {
+                line = sr.ReadLine();
+                string[] splitLine = line.Split(' ');
+
+                for (int j = 0; j < size; j++)
+                {
+                    matrix[i, j] = double.Parse(splitLine[j], System.Globalization.CultureInfo.InvariantCulture);
+                }
+            }
+            sr.Close();
+            return matrix;
+        }
+
+        private int IgnorePreviousLines(int size, int multiple)
+        {
+            int ignore = 0;
+            for (int i = 0; i < (size / multiple) - 1; i++)
+            {
+                ignore += multiple * (i + 1);
+            }
+            return ignore;
         }
     }
 }
