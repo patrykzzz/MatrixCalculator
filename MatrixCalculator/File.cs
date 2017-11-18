@@ -3,7 +3,7 @@ using System.IO;
 
 namespace MatrixCalculator
 {
-    public class File<T>
+    public class File<T> where T: new()
     {
         public void WriteToFile(Matrix<T> matrix, int size, StreamWriter sw)
         {

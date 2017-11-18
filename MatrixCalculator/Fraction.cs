@@ -1,20 +1,27 @@
 ﻿using System;
+using System.Globalization;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace MatrixCalculator
 {
     public class Fraction
     {
-        public long Numeral { get; }
-        public long Denominator { get; }
+        public BigInteger Numeral { get; }
+        public BigInteger Denominator { get; }
 
+        public Fraction()
+        {
+            Numeral = 0;
+            Denominator = 1;
+        }
         public Fraction(Fraction fraction)
         {
             Numeral = fraction.Numeral;
             Denominator = fraction.Denominator;
         }
 
-        public Fraction(long numeral, long denominator)
+        public Fraction(BigInteger numeral, BigInteger denominator)
         {
             var fraction = ReduceFraction(numeral, denominator);   
 
@@ -25,7 +32,8 @@ namespace MatrixCalculator
         public override string ToString()
         {
             //return Numeral + "/" + Denominator;
-            return (Convert.ToDouble(Numeral) / Convert.ToDouble(Denominator)).ToString();
+            double x = (double)Numeral / (double)Denominator;
+            return x.ToString(CultureInfo.CurrentCulture);
         }
 
         public static Fraction operator +(Fraction x, Fraction y)
@@ -48,25 +56,25 @@ namespace MatrixCalculator
             return new Fraction(Multiply(x, y));
         }
 
-        public static Fraction operator +(Fraction x, long num)
+        public static Fraction operator +(Fraction x, BigInteger num)
         {
             var y = new Fraction(num, 1);
             return new Fraction(Add(x, y));
         }
 
-        public static Fraction operator -(Fraction x, long num)
+        public static Fraction operator -(Fraction x, BigInteger num)
         {
             var y = new Fraction(num, 1);
             return new Fraction(Subtract(x, y));
         }
 
-        public static Fraction operator /(Fraction x, long num)
+        public static Fraction operator /(Fraction x, BigInteger num)
         {
             var y = new Fraction(num, 1);
             return new Fraction(Divide(x, y));
         }
 
-        public static Fraction operator *(Fraction x, long num)
+        public static Fraction operator *(Fraction x, BigInteger num)
         {
             var y = new Fraction(num, 1);
             return new Fraction(Multiply(x, y));
@@ -112,29 +120,50 @@ namespace MatrixCalculator
             return GetFractionSign(fraction.numeral, fraction.denominator);
         }
 
-        private static Fraction GetFractionSign(long first, long second)
+        private static Fraction GetFractionSign(BigInteger first, BigInteger second)
         {
             if (first < 0 && second < 0 || first > 0 && second < 0)
                 return new Fraction(-first, -second);
             return new Fraction(first, second);
         }
 
-        private static long GreatestCommonDivisor(long a, long b)
+        private static BigInteger GreatestCommonDivisor(BigInteger a, BigInteger b)
         {
-            while (b != 0)
+            while (a != b)
             {
-                long tmp = b;
-                b = a % b;
-                a = tmp;
+                if (a < b)
+                {
+                    b -= a;
+                }
+                else
+                {
+                    a -= b;
+                }
             }
             return a;
         }
 
-        public static (long numeral, long denominator) ReduceFraction(long numeral, long denominator)
+        public static (BigInteger numeral, BigInteger denominator) ReduceFraction(BigInteger numeral, BigInteger denominator)
         {
-            long gcd;
-            while ((gcd = GreatestCommonDivisor(numeral, denominator)) != 1)
+            if (numeral != 0)
             {
+                BigInteger gcd;
+
+                if (numeral < 0)
+                {
+                    numeral = -numeral;
+                }
+                if (denominator < 0)
+                {
+                    denominator = -denominator;
+                }
+
+                gcd = GreatestCommonDivisor(numeral, denominator);
+                if (gcd == 0)
+                {
+                    gcd = 1;
+                }
+                
                 numeral /= gcd;
                 denominator /= gcd;
             }

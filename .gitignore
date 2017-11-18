@@ -262,6 +262,3 @@ __pycache__/
 
 #Eigen files
 Eigen/
-
-#Output files
-Output/

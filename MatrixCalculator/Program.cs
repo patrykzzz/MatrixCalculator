@@ -39,18 +39,15 @@ namespace MatrixCalculator
         private readonly StreamWriter _partialFraction = new StreamWriter("../../../Output/PartialDataFraction.txt");
         private readonly StreamWriter _fullFraction = new StreamWriter("../../../Output/FullDataFraction.txt");
 
-//        private readonly StreamReader _firstMatrixFractionDouble = new StreamReader("../../../Output/FirstMatrixDataFraction.txt");
-//        private readonly StreamReader _secondMatrixFractionDouble = new StreamReader("../../../Output/SecondMatrixDataFraction.txt");
-//        private readonly StreamReader _thirdMatrixFractionDouble = new StreamReader("../../../Output/ThirdMatrixDataFraction.txt");
-//        private readonly StreamReader _vectorFractionDouble = new StreamReader("../../../Output/VectorDataFraction.txt");
-//        private readonly StreamWriter _firstOpFractionDouble = new StreamWriter("../../../Output/Res1DataFractionDouble.txt");
-//        private readonly StreamWriter _secOpFractionDouble = new StreamWriter("../../../Output/Res2DataFractionDouble.txt");
-//        private readonly StreamWriter _thrdOpFractionDouble = new StreamWriter("../../../Output/Res3DataFractionDouble.txt");
-//        private readonly StreamWriter _partialFractionDouble = new StreamWriter("../../../Output/PartialDataFractionDouble.txt");
-//        private readonly StreamWriter _fullFractionDouble = new StreamWriter("../../../Output/FullDataFractionDouble.txt");
-
-
-
+        private StreamReader _firstMatrixFractionDouble;
+        private StreamReader _secondMatrixFractionDouble;
+        private StreamReader _thirdMatrixFractionDouble;
+        private StreamReader _vectorFractionDouble;
+        private readonly StreamWriter _firstOpFractionDouble = new StreamWriter("../../../Output/Res1DataFractionDouble.txt");
+        private readonly StreamWriter _secOpFractionDouble = new StreamWriter("../../../Output/Res2DataFractionDouble.txt");
+        private readonly StreamWriter _thrdOpFractionDouble = new StreamWriter("../../../Output/Res3DataFractionDouble.txt");
+        private readonly StreamWriter _partialFractionDouble = new StreamWriter("../../../Output/PartialDataFractionDouble.txt");
+        private readonly StreamWriter _fullFractionDouble = new StreamWriter("../../../Output/FullDataFractionDouble.txt");
 
         public static void Main(string[] args)
         {
@@ -61,12 +58,15 @@ namespace MatrixCalculator
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 
             int multiplier = 5;
-            for (int i = multiplier; i < 100; i += multiplier)
+            int range = 15;
+            for (int i = multiplier; i < range ; i += multiplier)
             {
                 program.CreateFillMatrixAndWriteToFileDouble(i);
                 program.CreateFillMatrixAndWriteToFileFloat(i);
                 program.CreateFillMatrixAndWriteToFileFraction(i);
+                Console.WriteLine("Iteration - " + i);
             }
+
 
             program._firstMatrixDouble.Close();
             program._firstMatrixDouble.Close();
@@ -100,6 +100,26 @@ namespace MatrixCalculator
             program._thrdOpFraction.Close();
             program._partialFraction.Close();
             program._fullFraction.Close();
+
+            program._firstMatrixFractionDouble = new StreamReader("../../../Output/FirstMatrixDataFraction.txt");
+            program._secondMatrixFractionDouble = new StreamReader("../../../Output/SecondMatrixDataFraction.txt");
+            program._thirdMatrixFractionDouble = new StreamReader("../../../Output/ThirdMatrixDataFraction.txt");
+            program._vectorFractionDouble = new StreamReader("../../../Output/VectorDataFraction.txt");
+
+            for (int i = multiplier; i < range; i += multiplier)
+            {
+                program.CreateFillMatrixAndWriteToFileFractionDouble(i);
+            }
+
+            program._firstMatrixFractionDouble.Close();
+            program._secondMatrixFractionDouble.Close();
+            program._thirdMatrixFractionDouble.Close();
+            program._vectorFractionDouble.Close();
+            program._firstOpFractionDouble.Close();
+            program._secOpFractionDouble.Close();
+            program._thrdOpFractionDouble.Close();
+            program._partialFractionDouble.Close();
+            program._fullFractionDouble.Close();
 
             Console.WriteLine("Program ended its operation");
             Console.ReadKey();
@@ -173,6 +193,28 @@ namespace MatrixCalculator
             file.WriteToFile(res1, size, _firstOpFraction);
             file.WriteToFile(res2, size, _secOpFraction);
             file.WriteToFile(res3, size, _thrdOpFraction);
+        }
+
+        private void CreateFillMatrixAndWriteToFileFractionDouble(int size)
+        {
+            var file = new File<double>();
+
+            var matrixA = new Matrix<double>(file.ReadMatrixFromFile(size, _firstMatrixFractionDouble));
+            var matrixB = new Matrix<double>(file.ReadMatrixFromFile(size, _secondMatrixFractionDouble));
+            var matrixC = new Matrix<double>(file.ReadMatrixFromFile(size, _thirdMatrixFractionDouble));
+            double[] vector = file.ReadVectorFromFile(size, _vectorFractionDouble);
+
+            var res1 = matrixA * vector;
+            var res2 = (matrixA + matrixB + matrixC) * vector;
+            var res3 = matrixA * (matrixB * matrixC);
+
+            //gauss?
+            //pivLuFloat
+            //FullPivLuFloat
+
+            file.WriteToFile(res1, size, _firstOpFractionDouble);
+            file.WriteToFile(res2, size, _secOpFractionDouble);
+            file.WriteToFile(res3, size, _thrdOpFractionDouble);
         }
 
         public Fraction[] FillVectorWithRandom(int size)

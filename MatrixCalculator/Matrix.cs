@@ -2,7 +2,7 @@
 
 namespace MatrixCalculator
 {
-    public class Matrix<T> 
+    public class Matrix<T> where T : new()
     {
         public int NumberOfRows => MatrixValues.GetLength(0);
         public int NumberOfColumns => MatrixValues.GetLength(1);
@@ -62,17 +62,7 @@ namespace MatrixCalculator
             return new Matrix<T>(Multiply(i, j));
         }
 
-        public static Matrix<Fraction> operator *(Matrix<T> i, Matrix<Fraction> j)
-        {
-            return new Matrix<Fraction>(Multiply(i, j));
-        }
-
         public static T[] operator *(Matrix<T> a, T[] vector)
-        {
-            return MultiplyByVector(a, vector);
-        }
-
-        public static Fraction[] operator *(Matrix<T> a, Fraction[] vector)
         {
             return MultiplyByVector(a, vector);
         }
@@ -91,57 +81,12 @@ namespace MatrixCalculator
                     {
                         row[k] = a.MatrixValues[i, k];
                     }
-                    var values = new T[numberOfRows];
+                    var value = new T();
                     for (int k = 0; k < numberOfRows; k++)
                     {
-                        values[k] += (dynamic)b.MatrixValues[k, j] * (dynamic)row[k];
+                        value += (dynamic)b.MatrixValues[k, j] * (dynamic)row[k];
                     }
-
-                    foreach (var value in values)
-                    {
-                        result[i, j] += (dynamic)value;
-                    }
-                }
-            }
-            return result;
-        }
-
-        private static Fraction[,] Multiply(Matrix<T> a, Matrix<Fraction> b)
-        {
-            var numberOfRows = a.NumberOfRows;
-            var numberOfColumns = a.NumberOfColumns;
-            var result = new Fraction[a.NumberOfRows, b.NumberOfColumns];
-
-            for (int i = 0; i < a.NumberOfRows; i++)
-            {
-                for (int j = 0; j < b.NumberOfRows; j++)
-                {
-                    result[i, j] = new Fraction(0, 1);
-                }
-            }
-            for (int i = 0; i < numberOfRows; i++)
-            {
-                for (int j = 0; j < numberOfColumns; j++)
-                {
-                    var row = new T[numberOfColumns];
-                    for (int k = 0; k < numberOfColumns; k++)
-                    {
-                        row[k] = a.MatrixValues[i, k];
-                    }
-                    var values = new Fraction[numberOfRows];
-//                    for (int k = 0; k < numberOfRows; k++)
-//                    {
-//                        values[k] = new Fraction(0, 1);  
-//                    }
-                    for (int k = 0; k < numberOfRows; k++)
-                    {
-                        values[k] = (dynamic)b.MatrixValues[k, j] * (dynamic)row[k];
-                    }
-
-                    foreach (var value in values)
-                    {
-                        result[i, j] += (dynamic)value;
-                    }
+                    result[i, j] = (dynamic)value;
                 }
             }
             return result;
@@ -152,26 +97,9 @@ namespace MatrixCalculator
             var numberOfRows = a.NumberOfRows;
             var numberOfColumns = a.NumberOfColumns;
             var result = new T[a.NumberOfRows];
-
-            for (int i = 0; i < numberOfRows; i++)
+            for(int i = 0; i < a.NumberOfRows; i++)
             {
-                for (int j = 0; j < numberOfColumns; j++)
-                {
-                    result[i] += (dynamic)a.MatrixValues[i, j] * vector[j];
-                }
-            }
-            return result;
-        }
-
-        private static Fraction[] MultiplyByVector(Matrix<T> a, Fraction[] vector)
-        {
-            var numberOfRows = a.NumberOfRows;
-            var numberOfColumns = a.NumberOfColumns;
-            var result = new Fraction[a.NumberOfRows];
-
-            for (int i = 0; i < a.NumberOfRows; i++)
-            {
-                result[i] = new Fraction(0, 1);
+                result[i] = new T();
             }
 
             for (int i = 0; i < numberOfRows; i++)

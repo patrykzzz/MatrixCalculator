@@ -183,5 +183,20 @@ namespace MatrixCalculator
             Assert.Equal(1, result.Numeral);
             Assert.Equal(4, result.Denominator);
         }
+
+        [Fact]
+        public void Operations_CheckAddingAndReduce_WhileNumeralZero_ShouldReturnProperResult()
+        {
+            //Arrange
+            var first = new Fraction(0, 1);
+            var second = new Fraction(1, 6);
+
+            //Act
+            var result = first + second;
+
+            //Assert
+            Assert.Equal(1, result.Numeral);
+            Assert.Equal(6, result.Denominator);
+        }
     }
 }
