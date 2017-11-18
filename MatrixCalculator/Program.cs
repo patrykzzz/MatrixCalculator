@@ -156,11 +156,11 @@ namespace MatrixCalculator
             var matrixA = new Matrix<Fraction>(size, size);
             var matrixB = new Matrix<Fraction>(size, size);
             var matrixC = new Matrix<Fraction>(size, size);
-            Fraction[] vector = file.FillVectorWithRandom(size);
+            Fraction[] vector = FillVectorWithRandom(size);
 
             var res1 = matrixA * vector;
             var res2 = (matrixA + matrixB + matrixC) * vector;
-            var res3 = matrixA * (matrixB * matrixC);
+            var res3 = matrixA * (matrixB * matrixC); //here is issue 
 
             //gauss?
             //pivLuFloat
@@ -173,6 +173,19 @@ namespace MatrixCalculator
             file.WriteToFile(res1, size, _firstOpFraction);
             file.WriteToFile(res2, size, _secOpFraction);
             file.WriteToFile(res3, size, _thrdOpFraction);
+        }
+
+        public Fraction[] FillVectorWithRandom(int size)
+        {
+            var vector = new Fraction[size];
+            var random = new Random();
+
+            for (int i = 0; i < size; i++)
+            {
+                vector[i] = new Fraction(random.Next(Int32.MinValue, Int32.MaxValue), random.Next(Int32.MinValue, Int32.MaxValue));
+            }
+
+            return vector;
         }
     }
 }
