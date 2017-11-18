@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace MatrixCalculator
 {
@@ -23,7 +24,8 @@ namespace MatrixCalculator
 
         public override string ToString()
         {
-            return Numeral + "/" + Denominator;
+            //return Numeral + "/" + Denominator;
+            return (Convert.ToDouble(Numeral) / Convert.ToDouble(Denominator)).ToString();
         }
 
         public static Fraction operator +(Fraction x, Fraction y)
