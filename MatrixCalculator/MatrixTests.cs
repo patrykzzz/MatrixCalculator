@@ -113,7 +113,7 @@ namespace MatrixCalculator
             double[] expectedResult = { -1, 2, 3, -2 };
 
             //Act
-            var result = a.GaussWithoutChoice(a, b);
+            var result = a.GaussWithoutChoice(b);
 
             //Assert
             Assert.Equal(expectedResult, result);
@@ -217,7 +217,7 @@ namespace MatrixCalculator
             double[] expectedResult = { -1, 2, 3, -2 };
 
             //Act
-            var result = matrix.GaussWithPartialPivot(matrix, vector);
+            var result = matrix.GaussWithPartialPivot(vector);
 
             //Assert
             Assert.Equal(expectedResult, result);

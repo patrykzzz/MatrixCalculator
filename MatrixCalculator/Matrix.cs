@@ -150,42 +150,43 @@ namespace MatrixCalculator
             return matrix;
         }
 
-        public T[] GaussWithoutChoice(Matrix<T> a, T[] vector)
+        public T[] GaussWithoutChoice(T[] vector)
         {
-            var res = new T[a.NumberOfRows];
             SetTempMatrix();
+            var res = new T[NumberOfRows];
 
-            for (int i = 0; i < a.NumberOfRows - 1; i++)
+            for (int i = 0; i < NumberOfRows - 1; i++)
             {
-                for (int j = i + 1; j < a.NumberOfRows; j++)
+                for (int j = i + 1; j < NumberOfRows; j++)
                 {
-                    T multiplier = (dynamic) a.MatrixValues[j, i] / (dynamic)a.MatrixValues[i, i] * (-1);
-                    for (int k = i + 1; k < a.NumberOfRows; k++)
+                    T multiplier = (dynamic) TempMatrixValues[j, i] / (dynamic)TempMatrixValues[i, i] * (-1);
+                    for (int k = i + 1; k < NumberOfRows; k++)
                     {
-                        a.MatrixValues[j, k] += multiplier * (dynamic)a.MatrixValues[i, k];
+                        TempMatrixValues[j, k] += multiplier * (dynamic)TempMatrixValues[i, k];
                     }
                     vector[j] += (dynamic)vector[i] * multiplier;
                 }
             }
 
-            for (int i = a.NumberOfRows - 1; i >= 0; i--)
+            for (int i = NumberOfRows - 1; i >= 0; i--)
             {
                 T sum = (dynamic)vector[i];
-                for (int j = a.NumberOfRows - 1; j >= i + 1; j--)
+                for (int j = NumberOfRows - 1; j >= i + 1; j--)
                 {
-                    sum -= (dynamic)a.MatrixValues[i, j] * res[j];
+                    sum -= (dynamic)TempMatrixValues[i, j] * res[j];
                 }
-                res[i] = sum / (dynamic)a.MatrixValues[i, i];
+                res[i] = sum / (dynamic)TempMatrixValues[i, i];
             }
 
             return res;
         }
 
-        public T[] GaussWithPartialPivot(Matrix<T> matrix, T[] vector)
+        public T[] GaussWithPartialPivot(T[] vector)
         {
+            SetTempMatrix();
             var currentRow = 0;
             int currentColumn;
-            for (currentColumn = 0; currentColumn < matrix.NumberOfColumns - 1; currentColumn++, currentRow++)
+            for (currentColumn = 0; currentColumn < NumberOfColumns - 1; currentColumn++, currentRow++)
             {
                 var smallestRowIndex = FindIndexOfRowWithGreatestNumberInGivenColumn(currentRow, currentColumn);
                 SwapRows(vector, currentRow, smallestRowIndex);
@@ -196,6 +197,7 @@ namespace MatrixCalculator
 
         public T[] GaussWithCompletePivot(T[] vector)
         {
+            SetTempMatrix();
             var vectorHistory = Enumerable.Range(1, vector.Length).ToArray();
             for (int i = 0; i < NumberOfRows; i++)
             {
@@ -218,9 +220,9 @@ namespace MatrixCalculator
         {
             for (int i = 0; i < NumberOfRows; i++)
             {
-                var temp = MatrixValues[i, numberOfFirstColumn];
-                MatrixValues[i, numberOfFirstColumn] = MatrixValues[i, numberOfSecondColumn];
-                MatrixValues[i, numberOfSecondColumn] = temp;
+                var temp = TempMatrixValues[i, numberOfFirstColumn];
+                TempMatrixValues[i, numberOfFirstColumn] = TempMatrixValues[i, numberOfSecondColumn];
+                TempMatrixValues[i, numberOfSecondColumn] = temp;
             }
             var tempVector = vectorChange[numberOfFirstColumn];
             vectorChange[numberOfFirstColumn] = vectorChange[numberOfSecondColumn];
@@ -232,9 +234,9 @@ namespace MatrixCalculator
         {
             for (int i = 0; i < NumberOfColumns; i++)
             {
-                var temp = MatrixValues[numberOfFirstRow, i];
-                MatrixValues[numberOfFirstRow, i] = MatrixValues[numberOfSecondRow, i];
-                MatrixValues[numberOfSecondRow, i] = temp;
+                var temp = TempMatrixValues[numberOfFirstRow, i];
+                TempMatrixValues[numberOfFirstRow, i] = TempMatrixValues[numberOfSecondRow, i];
+                TempMatrixValues[numberOfSecondRow, i] = temp;
             }
             var oldValue = vector[numberOfFirstRow];
             vector[numberOfFirstRow] = vector[numberOfSecondRow];
@@ -250,10 +252,10 @@ namespace MatrixCalculator
                 var numerator = vector[i];
                 while (j < NumberOfColumns - 1)
                 {
-                    numerator -= (dynamic)MatrixValues[i, j + 1] * resultsVector[j + 1];
+                    numerator -= (dynamic)TempMatrixValues[i, j + 1] * resultsVector[j + 1];
                     j++;
                 }
-                resultsVector[i] = (dynamic) numerator / MatrixValues[i, i];
+                resultsVector[i] = (dynamic) numerator / TempMatrixValues[i, i];
             }
             return resultsVector;
         }
@@ -285,7 +287,7 @@ namespace MatrixCalculator
             {
                 for (int j = startingPoint; j < NumberOfColumns; j++)
                 {
-                    if ((dynamic)MatrixValues[i, j] > MatrixValues[result.row, result.column])
+                    if ((dynamic)TempMatrixValues[i, j] > TempMatrixValues[result.row, result.column])
                     {
                         result = (i, j);
                     }
@@ -296,13 +298,13 @@ namespace MatrixCalculator
 
         private int FindIndexOfRowWithGreatestNumberInGivenColumn(int rowNumber, int columnNumber)
         {
-            var greatestColumn = (dynamic)MatrixValues[rowNumber, columnNumber];
+            var greatestColumn = (dynamic)TempMatrixValues[rowNumber, columnNumber];
             int index = rowNumber;
             for (int i = rowNumber; i < NumberOfRows; i++)
             {
-                if ((dynamic)MatrixValues[i, columnNumber] > (dynamic)greatestColumn)
+                if ((dynamic)TempMatrixValues[i, columnNumber] > (dynamic)greatestColumn)
                 {
-                    greatestColumn = MatrixValues[i, columnNumber];
+                    greatestColumn = TempMatrixValues[i, columnNumber];
                     index = i;
                 }
             }
@@ -313,10 +315,10 @@ namespace MatrixCalculator
         {
             for (int i = rowNumber + 1; i < NumberOfRows; i++)
             {
-                var multiplier = (dynamic)MatrixValues[i, columnNumber] / MatrixValues[rowNumber, columnNumber] * (-1);
+                var multiplier = (dynamic)TempMatrixValues[i, columnNumber] / TempMatrixValues[rowNumber, columnNumber] * (-1);
                 for (int j = 0; j < NumberOfColumns; j++)
                 {
-                    MatrixValues[i, j] += multiplier * MatrixValues[rowNumber, j];
+                    TempMatrixValues[i, j] += multiplier * TempMatrixValues[rowNumber, j];
                 }
                 vector[i] += vector[rowNumber] * multiplier;
             }

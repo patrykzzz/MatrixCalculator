@@ -11,7 +11,6 @@ namespace MatrixCalculator
         private readonly StreamWriter _firstMatrixFloat = new StreamWriter("../../../Output/FirstMatrixDataFloat.txt");
         private readonly StreamWriter _secondMatrixFloat = new StreamWriter("../../../Output/SecondMatrixDataFloat.txt");
         private readonly StreamWriter _thirdMatrixFloat = new StreamWriter("../../../Output/ThirdMatrixDataFloat.txt");
-        private readonly StreamWriter _gaussMatrixFloat = new StreamWriter("../../../Output/GaussMatrixDataFloat.txt");
         private readonly StreamWriter _vectorFloat = new StreamWriter("../../../Output/VectorDataFloat.txt");
         private readonly StreamWriter _firstOpFloat = new StreamWriter("../../../Output/Res1DataFloatCs.txt");
         private readonly StreamWriter _secOpFloat = new StreamWriter("../../../Output/Res2DataFloatCs.txt");
@@ -23,7 +22,6 @@ namespace MatrixCalculator
         private readonly StreamWriter _firstMatrixFraction = new StreamWriter("../../../Output/FirstMatrixDataFraction.txt");
         private readonly StreamWriter _secondMatrixFraction = new StreamWriter("../../../Output/SecondMatrixDataFraction.txt");
         private readonly StreamWriter _thirdMatrixFraction = new StreamWriter("../../../Output/ThirdMatrixDataFraction.txt");
-        private readonly StreamWriter _gaussMatrixFraction = new StreamWriter("../../../Output/GaussMatrixDataFraction.txt");
         private readonly StreamWriter _vectorFraction = new StreamWriter("../../../Output/VectorDataFraction.txt");
         private readonly StreamWriter _firstOpFraction = new StreamWriter("../../../Output/Res1DataFraction.txt");
         private readonly StreamWriter _secOpFraction = new StreamWriter("../../../Output/Res2DataFraction.txt");
@@ -35,7 +33,6 @@ namespace MatrixCalculator
         private StreamReader _firstMatrixFractionDouble;
         private StreamReader _secondMatrixFractionDouble;
         private StreamReader _thirdMatrixFractionDouble;
-        private StreamReader _gaussMatrixFractionDouble;
         private StreamReader _vectorFractionDouble;
         private readonly StreamWriter _firstOpFractionDouble = new StreamWriter("../../../Output/Res1DataFractionDouble.txt");
         private readonly StreamWriter _secOpFractionDouble = new StreamWriter("../../../Output/Res2DataFractionDouble.txt");
@@ -65,7 +62,6 @@ namespace MatrixCalculator
             program._firstMatrixFloat.Close();
             program._secondMatrixFloat.Close();
             program._thirdMatrixFloat.Close();
-            program._gaussMatrixFloat.Close();
             program._vectorFloat.Close();
             program._firstOpFloat.Close();
             program._secOpFloat.Close();
@@ -77,7 +73,6 @@ namespace MatrixCalculator
             program._firstMatrixFraction.Close();
             program._secondMatrixFraction.Close();
             program._thirdMatrixFraction.Close();
-            program._gaussMatrixFraction.Close();
             program._vectorFraction.Close();
             program._firstOpFraction.Close();
             program._secOpFraction.Close();
@@ -89,7 +84,6 @@ namespace MatrixCalculator
             program._firstMatrixFractionDouble = new StreamReader("../../../Output/FirstMatrixDataFraction.txt");
             program._secondMatrixFractionDouble = new StreamReader("../../../Output/SecondMatrixDataFraction.txt");
             program._thirdMatrixFractionDouble = new StreamReader("../../../Output/ThirdMatrixDataFraction.txt");
-            program._gaussMatrixFractionDouble = new StreamReader("../../../Output/GaussMatrixDataFraction.txt");
             program._vectorFractionDouble = new StreamReader("../../../Output/VectorDataFraction.txt");
 
             for (int i = multiplier; i < range; i += multiplier)
@@ -100,12 +94,10 @@ namespace MatrixCalculator
             program._firstMatrixFractionDouble.Close();
             program._secondMatrixFractionDouble.Close();
             program._thirdMatrixFractionDouble.Close();
-            program._gaussMatrixFractionDouble.Close();
             program._vectorFractionDouble.Close();
             program._firstOpFractionDouble.Close();
             program._secOpFractionDouble.Close();
             program._thrdOpFractionDouble.Close();
-            program._gaussFractionDouble.Close();
             program._partialFractionDouble.Close();
             program._fullFractionDouble.Close();
 
@@ -120,7 +112,6 @@ namespace MatrixCalculator
             var matrixA = new Matrix<float>(size, size);
             var matrixB = new Matrix<float>(size, size);
             var matrixC = new Matrix<float>(size, size);
-            var gaussMatrix = new Matrix<float>(size, size);
             float[] vector = file.FillVectorWithRandom(size);
 
             var res1 = matrixA * vector;
@@ -130,12 +121,11 @@ namespace MatrixCalculator
             file.WriteToFile(matrixA, size, _firstMatrixFloat);
             file.WriteToFile(matrixB, size, _secondMatrixFloat);
             file.WriteToFile(matrixC, size, _thirdMatrixFloat);
-            file.WriteToFile(gaussMatrix, size, _gaussMatrixFloat);
             file.WriteToFile(vector, size, _vectorFloat);
 
-            var gauss = gaussMatrix.GaussWithoutChoice(gaussMatrix, vector);
-            var pivot = gaussMatrix.GaussWithPartialPivot(gaussMatrix, vector);
-            var full = gaussMatrix.GaussWithCompletePivot(vector);
+            var gauss = matrixA.GaussWithoutChoice((float[])vector.Clone());
+            var pivot = matrixA.GaussWithPartialPivot((float[])vector.Clone());
+            var full = matrixA.GaussWithCompletePivot((float[])vector.Clone());
 
             file.WriteToFile(res1, size, _firstOpFloat);
             file.WriteToFile(res2, size, _secOpFloat);
@@ -153,7 +143,6 @@ namespace MatrixCalculator
             var matrixA = new Matrix<Fraction>(size, size);
             var matrixB = new Matrix<Fraction>(size, size);
             var matrixC = new Matrix<Fraction>(size, size);
-            var gaussMatrix = new Matrix<Fraction>(size, size);
             Fraction[] vector = file.FillVectorWithRandom(size);
 
             var res1 = matrixA * vector;
@@ -163,14 +152,13 @@ namespace MatrixCalculator
             file.WriteToFile(matrixA, size, _firstMatrixFraction);
             file.WriteToFile(matrixB, size, _secondMatrixFraction);
             file.WriteToFile(matrixC, size, _thirdMatrixFraction);
-            file.WriteToFile(gaussMatrix, size, _gaussMatrixFraction);
             file.WriteToFile(vector, size, _vectorFraction);
 
-            var gauss = gaussMatrix.GaussWithoutChoice(gaussMatrix, vector);
+            var gauss = matrixA.GaussWithoutChoice((Fraction[])vector.Clone());
             Console.WriteLine("Gauss ok");
-            var pivot = gaussMatrix.GaussWithPartialPivot(gaussMatrix, vector);
+            var pivot = matrixA.GaussWithPartialPivot((Fraction[])vector.Clone());
             Console.WriteLine("Partial ok");
-            var full = gaussMatrix.GaussWithCompletePivot(vector);
+            var full = matrixA.GaussWithCompletePivot((Fraction[])vector.Clone());
             Console.WriteLine("Full ok");
 
             file.WriteToFile(res1, size, _firstOpFraction);
@@ -189,16 +177,15 @@ namespace MatrixCalculator
             var matrixA = new Matrix<double>(file.ReadMatrixFromFile(size, _firstMatrixFractionDouble));
             var matrixB = new Matrix<double>(file.ReadMatrixFromFile(size, _secondMatrixFractionDouble));
             var matrixC = new Matrix<double>(file.ReadMatrixFromFile(size, _thirdMatrixFractionDouble));
-            var gaussMatrix = new Matrix<double>(file.ReadMatrixFromFile(size, _gaussMatrixFractionDouble));
             double[] vector = file.ReadVectorFromFile(size, _vectorFractionDouble);
 
             var res1 = matrixA * vector;
             var res2 = (matrixA + matrixB + matrixC) * vector;
             var res3 = matrixA * (matrixB * matrixC);
 
-            var gauss = gaussMatrix.GaussWithoutChoice(gaussMatrix, vector);
-            var pivot = gaussMatrix.GaussWithPartialPivot(gaussMatrix, vector);
-            var full = gaussMatrix.GaussWithCompletePivot(vector);
+            var gauss = matrixA.GaussWithoutChoice((double[])vector.Clone());
+            var pivot = matrixA.GaussWithPartialPivot((double[])vector.Clone());
+            var full = matrixA.GaussWithCompletePivot((double[])vector.Clone());
 
             file.WriteToFile(res1, size, _firstOpFractionDouble);
             file.WriteToFile(res2, size, _secOpFractionDouble);
