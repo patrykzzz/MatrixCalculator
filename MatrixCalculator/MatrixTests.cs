@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using Xunit;
+﻿using Xunit;
 
 namespace MatrixCalculator
 {
@@ -112,13 +110,13 @@ namespace MatrixCalculator
             };
             var a = new Matrix<double>(x);
             double[] b = { 8, 7, 10, 2 };
-            double[] res = { -1, 2, 3, -2 };
+            double[] expectedResult = { -1, 2, 3, -2 };
 
             //Act
             var result = a.GaussWithoutChoice(a, b);
 
             //Assert
-            Assert.Equal(res, result);
+            Assert.Equal(expectedResult, result);
         }
 
         [Fact]
@@ -161,7 +159,7 @@ namespace MatrixCalculator
             var matrix = new Matrix<double>(matrixValues);
 
             //Act
-            matrix.SwapRows(vector, matrixValues, numberOfFirstRow, numberOfSecondRow);
+            matrix.SwapRows(vector, numberOfFirstRow, numberOfSecondRow);
 
             //Assert
             Assert.Equal(new[,]
@@ -177,33 +175,6 @@ namespace MatrixCalculator
         }
 
         [Fact]
-        public void ResetAllColumsAbove_HasGivenValues_ResetsColumnsProperly()
-        {
-            //Arrange
-            var matrix = new Matrix<double>(new[,] {
-                { 1.0, 1.0, 1.0, 0.5 },
-                { 1.0, 1.0, 1.0, 1.0 },
-                { 2.0, 2.0, 2.0, 2.0 }
-            });
-            var vector = new[] {1.0, 1.0, 1.0};
-
-            //Act
-            matrix.ResetAllColumsAbove(matrix, vector, 2, 3);
-
-            //Assert
-            Assert.Equal(new [,]
-            {
-                {0.5, 0.5, 0.5, 0 },
-                {0, 0, 0, 0 },
-                {2, 2, 2, 2 }
-            }, matrix.MatrixValues);
-            Assert.Equal(new []
-            {
-                0.75, 0.5, 1.0
-            }, vector);
-        }
-
-        [Fact]
         public void ResetAllColumsBelow_HasGivenValues_ResetsColumnsProperly()
         {
             //Arrange
@@ -215,7 +186,7 @@ namespace MatrixCalculator
             var vector = new[] { 1.0, 1.0, 1.0 };
 
             //Act
-            matrix.ResetAllColumnsBelow(matrix, vector, 0, 1);
+            matrix.ResetAllColumnsBelow(vector, 0, 1);
 
             //Assert
             Assert.Equal(new[,]
@@ -247,6 +218,28 @@ namespace MatrixCalculator
 
             //Act
             var result = matrix.GaussWithPartialPivot(matrix, vector);
+
+            //Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Fact]
+        public void GaussWithCompletePivot_ProperValues_ShouldReturnProperVector()
+        {
+            //Arrange
+            var x = new[,]
+            {
+                {4d, -2d, 4d, -2d},
+                {3d, 1d, 4d, 2d},
+                {2d, 4d, 2d, 1d},
+                {2d, -2d, 4d, 2d}
+            };
+            var matrix = new Matrix<double>(x);
+            double[] vector = { 8, 7, 10, 2 };
+            double[] expectedResult = { -1, 2, 3, -2 };
+
+            //Act
+            var result = matrix.GaussWithCompletePivot(vector);
 
             //Assert
             Assert.Equal(expectedResult, result);

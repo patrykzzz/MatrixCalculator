@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Linq;
 
 namespace MatrixCalculator
 {
-    public class Matrix<T> 
+    public class Matrix<T>
     {
         public int NumberOfRows => MatrixValues.GetLength(0);
         public int NumberOfColumns => MatrixValues.GetLength(1);
 
-        public T[ , ] MatrixValues { get; set; }
+        public T[,] MatrixValues { get; set; }
 
-        public Matrix(T[ ,] matrix)
+        public Matrix(T[,] matrix)
         {
             MatrixValues = matrix;
         }
@@ -30,7 +31,7 @@ namespace MatrixCalculator
                 {
                     for (int j = 0; j < columns; j++)
                     {
-                        matrix[i, j] = (dynamic) random.NextDouble() * random.Next(Int32.MinValue, Int32.MaxValue);
+                        matrix[i, j] = (dynamic)random.NextDouble() * random.Next(Int32.MinValue, Int32.MaxValue);
                     }
                 }
             }
@@ -40,7 +41,7 @@ namespace MatrixCalculator
                 {
                     for (int j = 0; j < columns; j++)
                     {
-                        matrix[i, j] = (dynamic) new Fraction(random.Next(Int32.MinValue, Int32.MaxValue), random.Next(Int32.MinValue, Int32.MaxValue));
+                        matrix[i, j] = (dynamic)new Fraction(random.Next(Int32.MinValue, Int32.MaxValue), random.Next(Int32.MinValue, Int32.MaxValue));
                     }
                 }
             }
@@ -57,7 +58,7 @@ namespace MatrixCalculator
             return new Matrix<T>(Subtract(i, j));
         }
 
-        public static Matrix<T> operator *(Matrix<T>i, Matrix<T> j)
+        public static Matrix<T> operator *(Matrix<T> i, Matrix<T> j)
         {
             return new Matrix<T>(Multiply(i, j));
         }
@@ -136,7 +137,7 @@ namespace MatrixCalculator
             {
                 for (int j = 0; j < numberOfColumns; j++)
                 {
-                    matrix[i, j] = (dynamic) a.MatrixValues[i, j] - (dynamic) b.MatrixValues[i, j];
+                    matrix[i, j] = (dynamic)a.MatrixValues[i, j] - (dynamic)b.MatrixValues[i, j];
                 }
             }
             return matrix;
@@ -150,21 +151,21 @@ namespace MatrixCalculator
             {
                 for (int j = i + 1; j < a.NumberOfRows; j++)
                 {
-                    T multiplier = -(dynamic) a.MatrixValues[j, i] / (dynamic) a.MatrixValues[i, i];
+                    T multiplier = -(dynamic)a.MatrixValues[j, i] / (dynamic)a.MatrixValues[i, i];
                     for (int k = i + 1; k < a.NumberOfRows; k++)
                     {
-                        a.MatrixValues[j, k] += multiplier * (dynamic) a.MatrixValues[i, k];
+                        a.MatrixValues[j, k] += multiplier * (dynamic)a.MatrixValues[i, k];
                     }
-                    vector[j] += (dynamic) vector[i] * multiplier;
+                    vector[j] += (dynamic)vector[i] * multiplier;
                 }
             }
-            
+
             for (int i = a.NumberOfRows - 1; i >= 0; i--)
             {
-                T sum = (dynamic) vector[i];
+                T sum = (dynamic)vector[i];
                 for (int j = a.NumberOfRows - 1; j >= i + 1; j--)
                 {
-                    sum -= (dynamic) a.MatrixValues[i, j] * res[j];
+                    sum -= (dynamic)a.MatrixValues[i, j] * res[j];
                 }
                 res[i] = sum / (dynamic)a.MatrixValues[i, i];
             }
@@ -179,47 +180,119 @@ namespace MatrixCalculator
             for (currentColumn = 0; currentColumn < matrix.NumberOfColumns - 1; currentColumn++, currentRow++)
             {
                 var smallestRowIndex = FindIndexOfRowWithGreatestNumberInGivenColumn(currentRow, currentColumn);
-                SwapRows(vector, matrix.MatrixValues, currentRow, smallestRowIndex);
-                ResetAllColumnsBelow(matrix, vector, currentRow, currentColumn);
+                SwapRows(vector, currentRow, smallestRowIndex);
+                ResetAllColumnsBelow(vector, currentRow, currentColumn);
             }
-            currentRow = matrix.NumberOfRows - 1;
-            currentColumn = matrix.NumberOfColumns - 1;
-            for (currentColumn = matrix.NumberOfColumns - 1; currentColumn > 0; currentColumn--, currentRow--)
-            {
-                ResetAllColumsAbove(matrix, vector, currentRow, currentColumn);
-            }
-            for (int i = matrix.NumberOfColumns - 1; i >= 0; i--)
-            {
-                vector[i] /= (dynamic)matrix.MatrixValues[i, i];
-            }
-            return vector;
+            return GetResultsAfterGauss(vector);
         }
 
-        public void SwapRows(T[] additionalColumn, T[,] matrixValues , int numberOfFirstRow, int numberOfSecondRow)
+        public T[] GaussWithCompletePivot(T[] vector)
         {
-            for (int i = 0; i < matrixValues.GetLength(1); i++)
+            var vectorHistory = Enumerable.Range(1, vector.Length).ToArray();
+            for (int i = 0; i < NumberOfRows; i++)
             {
-                var temp = matrixValues[numberOfFirstRow, i];
-                matrixValues[numberOfFirstRow, i] = matrixValues[numberOfSecondRow, i];
-                matrixValues[numberOfSecondRow, i] = temp;
+                var greatestElementPosition = GetGreatestElementPosition(i);
+                if (greatestElementPosition.row != i)
+                {
+                    SwapRows(vector, i, greatestElementPosition.row);
+                }
+                if (greatestElementPosition.column != i)
+                {
+                    vectorHistory = SwapColumns(i, greatestElementPosition.column, vectorHistory);
+                }
+                ResetAllColumnsBelow(vector, i, i);
             }
-            var oldValue = additionalColumn[numberOfFirstRow];
-            additionalColumn[numberOfFirstRow] = additionalColumn[numberOfSecondRow];
-            additionalColumn[numberOfSecondRow] = oldValue;
+            return GetProperVector(vector, vectorHistory);
+
         }
 
-        public void SwapColumn(T[,] matrixValues, T[] vector, int numberOfFirstColumn, int numberOfSecondColumn)
+        public int[] SwapColumns(int numberOfFirstColumn, int numberOfSecondColumn, int[] vectorChange)
         {
-            //TODO
+            for (int i = 0; i < NumberOfRows; i++)
+            {
+                var temp = MatrixValues[i, numberOfFirstColumn];
+                MatrixValues[i, numberOfFirstColumn] = MatrixValues[i, numberOfSecondColumn];
+                MatrixValues[i, numberOfSecondColumn] = temp;
+            }
+            var tempVector = vectorChange[numberOfFirstColumn];
+            vectorChange[numberOfFirstColumn] = vectorChange[numberOfSecondColumn];
+            vectorChange[numberOfSecondColumn] = tempVector;
+            return vectorChange;
+        }
+
+        public void SwapRows(T[] vector, int numberOfFirstRow, int numberOfSecondRow)
+        {
+            for (int i = 0; i < NumberOfColumns; i++)
+            {
+                var temp = MatrixValues[numberOfFirstRow, i];
+                MatrixValues[numberOfFirstRow, i] = MatrixValues[numberOfSecondRow, i];
+                MatrixValues[numberOfSecondRow, i] = temp;
+            }
+            var oldValue = vector[numberOfFirstRow];
+            vector[numberOfFirstRow] = vector[numberOfSecondRow];
+            vector[numberOfSecondRow] = oldValue;
+        }
+
+        private T[] GetResultsAfterGauss(T[] vector)
+        {
+            var resultsVector = new T[vector.Length];
+            for (int i = vector.Length - 1; i >= 0; i--)
+            {
+                int j = i;
+                var numerator = vector[i];
+                while (j < NumberOfColumns - 1)
+                {
+                    numerator -= (dynamic)MatrixValues[i, j + 1] * resultsVector[j + 1];
+                    j++;
+                }
+                resultsVector[i] = (dynamic) numerator / MatrixValues[i, i];
+            }
+            return resultsVector;
+        }
+
+        private T[] GetProperVector(T[] vector, int[] vectorHistory)
+        {
+            var resultsVector = GetResultsAfterGauss(vector);
+            for (int i = 0; i < vector.Length; i++)
+            {
+                if (vectorHistory[i] == i)
+                    continue;
+                var indexToReplace = vectorHistory[i] - 1;
+
+                var tempIndex = vectorHistory[i];
+                vectorHistory[i] = vectorHistory[indexToReplace];
+                vectorHistory[indexToReplace] = tempIndex;
+
+                var tempValue = resultsVector[i];
+                resultsVector[i] = resultsVector[indexToReplace];
+                resultsVector[indexToReplace] = tempValue;
+            }
+            return resultsVector;
+        }
+
+        private (int row, int column) GetGreatestElementPosition(int startingPoint)
+        {
+            var result = (row: startingPoint, column: startingPoint);
+            for (int i = startingPoint; i < NumberOfRows; i++)
+            {
+                for (int j = startingPoint; j < NumberOfColumns; j++)
+                {
+                    if ((dynamic)MatrixValues[i, j] > MatrixValues[result.row, result.column])
+                    {
+                        result = (i, j);
+                    }
+                }
+            }
+            return result;
         }
 
         private int FindIndexOfRowWithGreatestNumberInGivenColumn(int rowNumber, int columnNumber)
         {
-            var greatestColumn = Math.Abs((dynamic)MatrixValues[rowNumber, columnNumber]);
+            var greatestColumn = (dynamic)MatrixValues[rowNumber, columnNumber];
             int index = rowNumber;
             for (int i = rowNumber; i < NumberOfRows; i++)
             {
-                if ((dynamic) Math.Abs((dynamic)MatrixValues[i, columnNumber]) > Math.Abs((dynamic)greatestColumn))
+                if ((dynamic)MatrixValues[i, columnNumber] > (dynamic)greatestColumn)
                 {
                     greatestColumn = MatrixValues[i, columnNumber];
                     index = i;
@@ -228,27 +301,14 @@ namespace MatrixCalculator
             return index;
         }
 
-        public void ResetAllColumsAbove(Matrix<T> matrix, T[] vector, int rowNumber, int columnNumber)
+        public void ResetAllColumnsBelow(T[] vector, int rowNumber, int columnNumber)
         {
-            for (int i = 0; i < rowNumber; i++)
+            for (int i = rowNumber + 1; i < NumberOfRows; i++)
             {
-                    var multiplier = -(dynamic)matrix.MatrixValues[i, columnNumber] / matrix.MatrixValues[rowNumber, columnNumber];
-                    for (int j = 0; j < matrix.NumberOfColumns; j++)
-                    {
-                        matrix.MatrixValues[i, j] += multiplier * matrix.MatrixValues[rowNumber, j];
-                    }
-                    vector[i] += vector[rowNumber] * multiplier;
-            }
-        }
-
-        public void ResetAllColumnsBelow(Matrix<T> matrix, T[] vector, int rowNumber, int columnNumber)
-        {
-            for (int i = rowNumber + 1; i < matrix.NumberOfRows; i++)
-            {
-                var multiplier = -(dynamic) matrix.MatrixValues[i, columnNumber] / matrix.MatrixValues[rowNumber, columnNumber];
-                for (int j = 0; j < matrix.NumberOfColumns; j++)
+                var multiplier = -(dynamic)MatrixValues[i, columnNumber] / MatrixValues[rowNumber, columnNumber];
+                for (int j = 0; j < NumberOfColumns; j++)
                 {
-                    matrix.MatrixValues[i, j] += multiplier * matrix.MatrixValues[rowNumber, j];
+                    MatrixValues[i, j] += multiplier * MatrixValues[rowNumber, j];
                 }
                 vector[i] += vector[rowNumber] * multiplier;
             }
