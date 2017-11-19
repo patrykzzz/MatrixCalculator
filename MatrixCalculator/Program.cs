@@ -57,8 +57,8 @@ namespace MatrixCalculator
             culture.NumberFormat.NumberDecimalSeparator = ".";
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 
-            int multiplier = 5;
-            int range = 15;
+            int multiplier = 2;
+            int range = 37;
             for (int i = multiplier; i < range ; i += multiplier)
             {
                 program.CreateFillMatrixAndWriteToFileDouble(i);
@@ -180,7 +180,7 @@ namespace MatrixCalculator
 
             var res1 = matrixA * vector;
             var res2 = (matrixA + matrixB + matrixC) * vector;
-            var res3 = matrixA * (matrixB * matrixC); //here is issue 
+            var res3 = matrixA * (matrixB * matrixC);
 
             //gauss?
             //pivLuFloat

@@ -40,7 +40,8 @@ namespace MatrixCalculator
                 {
                     for (int j = 0; j < columns; j++)
                     {
-                        matrix[i, j] = (dynamic) new Fraction(random.Next(Int32.MinValue, Int32.MaxValue), random.Next(Int32.MinValue, Int32.MaxValue));
+//                        matrix[i, j] = (dynamic) new Fraction(random.Next(Int16.MinValue, Int16.MaxValue), random.Next(Int16.MinValue, Int16.MaxValue));
+                        matrix[i, j] = (dynamic) new Fraction(random.Next(1, 10), random.Next(1, 10));
                     }
                 }
             }
@@ -76,15 +77,15 @@ namespace MatrixCalculator
             {
                 for (int j = 0; j < numberOfColumns; j++)
                 {
-                    var row = new T[numberOfColumns];
-                    for (int k = 0; k < numberOfColumns; k++)
-                    {
-                        row[k] = a.MatrixValues[i, k];
-                    }
+//                    var row = new T[numberOfColumns];
+//                    for (int k = 0; k < numberOfColumns; k++)
+//                    {
+//                        row[k] = a.MatrixValues[i, k];
+//                    }
                     var value = new T();
                     for (int k = 0; k < numberOfRows; k++)
                     {
-                        value += (dynamic)b.MatrixValues[k, j] * (dynamic)row[k];
+                        value += (dynamic)b.MatrixValues[k, j] * (dynamic)a.MatrixValues[i, k];
                     }
                     result[i, j] = (dynamic)value;
                 }

@@ -129,17 +129,39 @@ namespace MatrixCalculator
 
         private static BigInteger GreatestCommonDivisor(BigInteger a, BigInteger b)
         {
-            while (a != b)
+//                        while (a != b)
+//                        {
+//                            if (a < b)
+//                            {
+//                                b -= a;
+//                            }
+//                            else
+//                            {
+//                                a -= b;
+//                            }
+//                        }
+            while (b != 0)
             {
-                if (a < b)
-                {
-                    b -= a;
-                }
-                else
-                {
-                    a -= b;
-                }
+                BigInteger tmp = b;
+                b = a % b;
+                a = tmp;
             }
+
+//            while (b != 0 && a != 0)
+//            {
+//                if (b < a)
+//                {
+//                    BigInteger tmp = b;
+//                    b = a % b;
+//                    a = tmp;
+//                }
+//                else
+//                {
+//                    BigInteger tmp = a;
+//                    a = b % a;
+//                    b = tmp;
+//                }
+//            }
             return a;
         }
 
@@ -158,14 +180,16 @@ namespace MatrixCalculator
                     denominator = -denominator;
                 }
 
-                gcd = GreatestCommonDivisor(numeral, denominator);
-                if (gcd == 0)
+
+
+                while ((gcd = GreatestCommonDivisor(numeral, denominator)) != 1)
                 {
-                    gcd = 1;
+                    if (gcd == 0)
+                        gcd = 1;
+
+                    numeral /= gcd;
+                    denominator /= gcd;
                 }
-                
-                numeral /= gcd;
-                denominator /= gcd;
             }
 
             return (numeral, denominator);
