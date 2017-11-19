@@ -9,6 +9,8 @@ namespace MatrixCalculator
         public int NumberOfColumns => MatrixValues.GetLength(1);
 
         public T[,] MatrixValues { get; set; }
+        public T[,] TempMatrixValues { get; set; }
+
 
         public Matrix(T[,] matrix)
         {
@@ -25,7 +27,7 @@ namespace MatrixCalculator
             var random = new Random();
             var matrix = new T[rows, columns];
 
-            if (matrix is double[,] || matrix is float[,])
+            if (matrix is double[,])
             {
                 for (int i = 0; i < rows; i++)
                 {
@@ -35,13 +37,22 @@ namespace MatrixCalculator
                     }
                 }
             }
+            else if (matrix is float[,])
+            {
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < columns; j++)
+                    {
+                        matrix[i, j] = (dynamic)(float)random.NextDouble() * random.Next(Int32.MinValue, Int32.MaxValue);
+                    }
+                }
+            }
             else if (matrix is Fraction[,])
             {
                 for (int i = 0; i < rows; i++)
                 {
                     for (int j = 0; j < columns; j++)
                     {
-//                        matrix[i, j] = (dynamic) new Fraction(random.Next(Int16.MinValue, Int16.MaxValue), random.Next(Int16.MinValue, Int16.MaxValue));
                         matrix[i, j] = (dynamic) new Fraction(random.Next(1, 10), random.Next(1, 10));
                     }
                 }
@@ -78,11 +89,6 @@ namespace MatrixCalculator
             {
                 for (int j = 0; j < numberOfColumns; j++)
                 {
-//                    var row = new T[numberOfColumns];
-//                    for (int k = 0; k < numberOfColumns; k++)
-//                    {
-//                        row[k] = a.MatrixValues[i, k];
-//                    }
                     var value = new T();
                     for (int k = 0; k < numberOfRows; k++)
                     {
@@ -147,12 +153,13 @@ namespace MatrixCalculator
         public T[] GaussWithoutChoice(Matrix<T> a, T[] vector)
         {
             var res = new T[a.NumberOfRows];
+            SetTempMatrix();
 
             for (int i = 0; i < a.NumberOfRows - 1; i++)
             {
                 for (int j = i + 1; j < a.NumberOfRows; j++)
                 {
-                    T multiplier = -(dynamic)a.MatrixValues[j, i] / (dynamic)a.MatrixValues[i, i];
+                    T multiplier = (dynamic) a.MatrixValues[j, i] / (dynamic)a.MatrixValues[i, i] * (-1);
                     for (int k = i + 1; k < a.NumberOfRows; k++)
                     {
                         a.MatrixValues[j, k] += multiplier * (dynamic)a.MatrixValues[i, k];
@@ -306,13 +313,18 @@ namespace MatrixCalculator
         {
             for (int i = rowNumber + 1; i < NumberOfRows; i++)
             {
-                var multiplier = -(dynamic)MatrixValues[i, columnNumber] / MatrixValues[rowNumber, columnNumber];
+                var multiplier = (dynamic)MatrixValues[i, columnNumber] / MatrixValues[rowNumber, columnNumber] * (-1);
                 for (int j = 0; j < NumberOfColumns; j++)
                 {
                     MatrixValues[i, j] += multiplier * MatrixValues[rowNumber, j];
                 }
                 vector[i] += vector[rowNumber] * multiplier;
             }
+        }
+
+        private void SetTempMatrix()
+        {
+            TempMatrixValues = (T[,])MatrixValues.Clone();
         }
 
     }

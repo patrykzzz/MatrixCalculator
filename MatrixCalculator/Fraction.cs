@@ -80,6 +80,26 @@ namespace MatrixCalculator
             return new Fraction(Multiply(x, y));
         }
 
+        public static bool operator >(Fraction x, Fraction y)
+        {
+            var firstFraction = (double) x.Numeral / (double) x.Denominator;
+            var secFraction = (double) y.Numeral / (double) y.Denominator;
+            if (firstFraction > secFraction)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool operator <(Fraction x, Fraction y)
+        {
+            var firstFraction = (double)x.Numeral / (double)x.Denominator;
+            var secFraction = (double)y.Numeral / (double)y.Denominator;
+            if (firstFraction < secFraction)
+                return true;
+            else
+                return false;
+        }
+
         private static Fraction Add(Fraction first, Fraction second)
         {
             var a = first.Numeral * second.Denominator + second.Numeral * first.Denominator;
@@ -129,17 +149,6 @@ namespace MatrixCalculator
 
         private static BigInteger GreatestCommonDivisor(BigInteger a, BigInteger b)
         {
-//                        while (a != b)
-//                        {
-//                            if (a < b)
-//                            {
-//                                b -= a;
-//                            }
-//                            else
-//                            {
-//                                a -= b;
-//                            }
-//                        }
             while (b != 0)
             {
                 BigInteger tmp = b;
@@ -147,21 +156,6 @@ namespace MatrixCalculator
                 a = tmp;
             }
 
-//            while (b != 0 && a != 0)
-//            {
-//                if (b < a)
-//                {
-//                    BigInteger tmp = b;
-//                    b = a % b;
-//                    a = tmp;
-//                }
-//                else
-//                {
-//                    BigInteger tmp = a;
-//                    a = b % a;
-//                    b = tmp;
-//                }
-//            }
             return a;
         }
 

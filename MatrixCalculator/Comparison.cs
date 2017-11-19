@@ -20,7 +20,7 @@ namespace MatrixCalculator
 
         private void CompareDoubleCsCppAndFraction()
         {
-            
+            //tylko res 1 -3
         }
 
         private void CompareFloatCsAndCpp()
