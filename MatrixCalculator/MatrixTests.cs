@@ -244,5 +244,26 @@ namespace MatrixCalculator
             //Assert
             Assert.Equal(expectedResult, result);
         }
+
+        [Fact]
+        public void Operations_ChecFractionkMultiplyByVector_ShouldReturnProperResult()
+        {
+            //Arrange
+            var matrix = new Matrix<Fraction>(new[,] {
+                { new Fraction(1,2), new Fraction(1,3), new Fraction(1,4), new Fraction(1,2) },
+                { new Fraction(1,3), new Fraction(1,3), new Fraction(1,3), new Fraction(1,3) },
+                { new Fraction(1,4), new Fraction(1,2), new Fraction(1,2), new Fraction(1,2) }
+            });
+            var vector = new[] { new Fraction(1, 2), new Fraction(1, 3), new Fraction(1, 4), new Fraction(1, 2) };
+
+            //Act
+            var res = matrix * vector;
+
+            //Assert
+            Assert.Equal(new []
+            {
+                new Fraction(25, 36), new Fraction(19, 36), new Fraction(16,24)  
+            }, res);
+        }
     }
 }

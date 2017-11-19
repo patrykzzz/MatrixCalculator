@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MatrixCalculator
 {
-    public class Matrix<T>
+    public class Matrix<T> where T : new()
     {
         public int NumberOfRows => MatrixValues.GetLength(0);
         public int NumberOfColumns => MatrixValues.GetLength(1);
@@ -82,17 +82,12 @@ namespace MatrixCalculator
                     {
                         row[k] = a.MatrixValues[i, k];
                     }
-                    var values = new T[numberOfRows];
+                    var value = new T();
                     for (int k = 0; k < numberOfRows; k++)
                     {
-                        values[k] += (dynamic)b.MatrixValues[k, j] * (dynamic)row[k];
+                        value += (dynamic)b.MatrixValues[k, j] * (dynamic)row[k];
                     }
-
-                    foreach (var value in values)
-                    {
-                        result[i, j] += (dynamic)value;
-                    }
-
+                    result[i, j] = (dynamic)value;
                 }
             }
             return result;
@@ -103,6 +98,11 @@ namespace MatrixCalculator
             var numberOfRows = a.NumberOfRows;
             var numberOfColumns = a.NumberOfColumns;
             var result = new T[a.NumberOfRows];
+            for(int i = 0; i < a.NumberOfRows; i++)
+            {
+                result[i] = new T();
+            }
+
             for (int i = 0; i < numberOfRows; i++)
             {
                 for (int j = 0; j < numberOfColumns; j++)
