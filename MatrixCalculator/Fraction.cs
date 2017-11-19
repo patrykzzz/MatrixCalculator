@@ -178,6 +178,7 @@ namespace MatrixCalculator
 
                 while ((gcd = GreatestCommonDivisor(numeral, denominator)) != 1)
                 {
+//                gcd = GreatestCommonDivisor(numeral, denominator);
                     if (gcd == 0)
                         gcd = 1;
 

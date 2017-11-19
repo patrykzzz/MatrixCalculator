@@ -50,7 +50,7 @@ namespace MatrixCalculator
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 
             int multiplier = 2;
-            int range = 5;
+            int range = 13;
             for (int i = multiplier; i < range ; i += multiplier)
             {
                 Console.WriteLine("Iteration - " + i);
@@ -113,6 +113,7 @@ namespace MatrixCalculator
             var matrixB = new Matrix<float>(size, size);
             var matrixC = new Matrix<float>(size, size);
             float[] vector = file.FillVectorWithRandom(size);
+
 
             var res1 = matrixA * vector;
             var res2 = (matrixA + matrixB + matrixC) * vector;
