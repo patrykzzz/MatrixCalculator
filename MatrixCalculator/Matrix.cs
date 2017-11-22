@@ -265,19 +265,27 @@ namespace MatrixCalculator
             var resultsVector = GetResultsAfterGauss(vector);
             for (int i = 0; i < vector.Length; i++)
             {
-                if (vectorHistory[i] == i)
-                    continue;
-                var indexToReplace = vectorHistory[i] - 1;
+                if (vectorHistory[i] != i + 1)
+                {
+                    var indexToReplace = i;
+                    for (int j = i; j < vector.Length; j++)
+                    {
+                        if (vectorHistory[j] == i + 1)
+                        {
+                            indexToReplace = j;
+                        }
+                    }
 
-                var tempIndex = vectorHistory[i];
-                vectorHistory[i] = vectorHistory[indexToReplace];
-                vectorHistory[indexToReplace] = tempIndex;
+                    var tempIndex = vectorHistory[i];
+                    vectorHistory[i] = vectorHistory[indexToReplace];
+                    vectorHistory[indexToReplace] = tempIndex;
 
-                var tempValue = resultsVector[i];
-                resultsVector[i] = resultsVector[indexToReplace];
-                resultsVector[indexToReplace] = tempValue;
+                    var tempValue = resultsVector[i];
+                    resultsVector[i] = resultsVector[indexToReplace];
+                    resultsVector[indexToReplace] = tempValue;
+                }
             }
-            return resultsVector;
+            return resultsVector; ;
         }
 
         private (int row, int column) GetGreatestElementPosition(int startingPoint)
