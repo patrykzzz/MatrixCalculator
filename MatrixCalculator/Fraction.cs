@@ -142,19 +142,34 @@ namespace MatrixCalculator
 
         private static Fraction GetFractionSign(BigInteger first, BigInteger second)
         {
-            if (first < 0 && second < 0 || first > 0 && second < 0)
-                return new Fraction(-first, -second);
+//            if (first < 0 && second < 0 || first > 0 && second < 0)
+//                return new Fraction(-first, -second);
             return new Fraction(first, second);
         }
 
         private static BigInteger GreatestCommonDivisor(BigInteger a, BigInteger b)
         {
-            while (b != 0)
-            {
-                BigInteger tmp = b;
-                b = a % b;
-                a = tmp;
-            }
+                        while (b != 0)
+                        {
+                            BigInteger tmp = b;
+                            b = a % b;
+                            a = tmp;
+                        }
+
+//            while (num != den)
+//            {
+//                if (num < den)
+//                {
+//                    den -= num;
+
+//                }
+//                else
+//                {
+//                    num -= den;
+//                }
+//            }
+//
+//            return num;
 
             return a;
         }

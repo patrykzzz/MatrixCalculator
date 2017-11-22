@@ -34,12 +34,12 @@ namespace MatrixCalculator
         private StreamReader _secondMatrixFractionDouble;
         private StreamReader _thirdMatrixFractionDouble;
         private StreamReader _vectorFractionDouble;
-        private readonly StreamWriter _firstOpFractionDouble = new StreamWriter("../../../Output/Res1DataFractionDouble.txt");
-        private readonly StreamWriter _secOpFractionDouble = new StreamWriter("../../../Output/Res2DataFractionDouble.txt");
-        private readonly StreamWriter _thrdOpFractionDouble = new StreamWriter("../../../Output/Res3DataFractionDouble.txt");
-        private readonly StreamWriter _gaussFractionDouble = new StreamWriter("../../../Output/GaussDataFractionDouble.txt");
-        private readonly StreamWriter _partialFractionDouble = new StreamWriter("../../../Output/PartialDataFractionDouble.txt");
-        private readonly StreamWriter _fullFractionDouble = new StreamWriter("../../../Output/FullDataFractionDouble.txt");
+        private readonly StreamWriter _firstOpFractionDouble = new StreamWriter("../../../Output/Res1DataDoubleCs.txt");
+        private readonly StreamWriter _secOpFractionDouble = new StreamWriter("../../../Output/Res2DataDoubleCs.txt");
+        private readonly StreamWriter _thrdOpFractionDouble = new StreamWriter("../../../Output/Res3DataDoubleCs.txt");
+        private readonly StreamWriter _gaussFractionDouble = new StreamWriter("../../../Output/GaussDataDoubleCs.txt");
+        private readonly StreamWriter _partialFractionDouble = new StreamWriter("../../../Output/PartialDataDoubleCs.txt");
+        private readonly StreamWriter _fullFractionDouble = new StreamWriter("../../../Output/FullDataDoubleCs.txt");
 
         public static void Main(string[] args)
         {
@@ -49,14 +49,13 @@ namespace MatrixCalculator
             culture.NumberFormat.NumberDecimalSeparator = ".";
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 
-            int multiplier = 2;
-            int range = 13;
+            int multiplier = 5;
+            int range = 101;
             for (int i = multiplier; i < range ; i += multiplier)
             {
                 Console.WriteLine("Iteration - " + i);
                 program.CreateFillMatrixAndWriteToFileFloat(i);
                 program.CreateFillMatrixAndWriteToFileFraction(i);
-                Console.WriteLine("Done");
             }
 
             program._firstMatrixFloat.Close();
@@ -88,6 +87,7 @@ namespace MatrixCalculator
 
             for (int i = multiplier; i < range; i += multiplier)
             {
+                Console.WriteLine("Double iteration - " + i);
                 program.CreateFillMatrixAndWriteToFileFractionDouble(i);
             }
 
@@ -155,20 +155,20 @@ namespace MatrixCalculator
             file.WriteToFile(matrixC, size, _thirdMatrixFraction);
             file.WriteToFile(vector, size, _vectorFraction);
 
-            var gauss = matrixA.GaussWithoutChoice((Fraction[])vector.Clone());
-            Console.WriteLine("Gauss ok");
-            var pivot = matrixA.GaussWithPartialPivot((Fraction[])vector.Clone());
-            Console.WriteLine("Partial ok");
-            var full = matrixA.GaussWithCompletePivot((Fraction[])vector.Clone());
-            Console.WriteLine("Full ok");
+//            var gauss = matrixA.GaussWithoutChoice((Fraction[])vector.Clone());
+//            Console.WriteLine("Gauss ok");
+//            var pivot = matrixA.GaussWithPartialPivot((Fraction[])vector.Clone());
+//            Console.WriteLine("Partial ok");
+//            var full = matrixA.GaussWithCompletePivot((Fraction[])vector.Clone());
+//            Console.WriteLine("Full ok");
 
             file.WriteToFile(res1, size, _firstOpFraction);
             file.WriteToFile(res2, size, _secOpFraction);
             file.WriteToFile(res3, size, _thrdOpFraction);
 
-            file.WriteToFile(gauss, size, _gaussFraction);
-            file.WriteToFile(pivot, size, _partialFraction);
-            file.WriteToFile(full, size, _fullFraction);
+//            file.WriteToFile(gauss, size, _gaussFraction);
+//            file.WriteToFile(pivot, size, _partialFraction);
+//            file.WriteToFile(full, size, _fullFraction);
         }
 
         private void CreateFillMatrixAndWriteToFileFractionDouble(int size)
