@@ -316,7 +316,7 @@ namespace MatrixCalculator
             for (int i = rowNumber + 1; i < NumberOfRows; i++)
             {
                 var multiplier = (dynamic)TempMatrixValues[i, columnNumber] / TempMatrixValues[rowNumber, columnNumber] * (-1);
-                for (int j = 0; j < NumberOfColumns; j++)
+                for (int j = columnNumber; j < NumberOfColumns; j++)
                 {
                     TempMatrixValues[i, j] += multiplier * TempMatrixValues[rowNumber, j];
                 }
@@ -328,6 +328,5 @@ namespace MatrixCalculator
         {
             TempMatrixValues = (T[,])MatrixValues.Clone();
         }
-
     }
 }
