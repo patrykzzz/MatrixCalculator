@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,15 +10,15 @@ namespace MatrixCalculator
         private readonly string Results1FloatCsPath = "../../../Output/Res1DataFloatCs.txt";
         private readonly string Results2FloatCsPath = "../../../Output/Res2DataFloatCs.txt";
         private readonly string Results3FloatCsPath = "../../../Output/Res3DataFloatCs.txt";
-        private readonly string Results1FloatPath = "../../../Output/Res1DataFloat.txt";
-        private readonly string Results2FloatPath = "../../../Output/Res2DataFloat.txt";
-        private readonly string Results3FloatPath = "../../../Output/Res3DataFloat.txt";
-        private readonly string Results1DoublePath = "../../../Output/Res1DataDoubleCs.txt";
-        private readonly string Results2DoublePath = "../../../Output/Res2DataDoubleCs.txt";
-        private readonly string Results3DoublePath = "../../../Output/Res3DataDoubleCs.txt";
-        private readonly string Results1DoubleCsPath = "../../../Output/Res1DataDouble.txt";
-        private readonly string Results2DoubleCsPath = "../../../Output/Res2DataDouble.txt";
-        private readonly string Results3DoubleCsPath = "../../../Output/Res3DataDouble.txt";
+        private readonly string Results1FloatPath = "../../../Output/Res1DataFloatCpp.txt";
+        private readonly string Results2FloatPath = "../../../Output/Res2DataFloatCpp.txt";
+        private readonly string Results3FloatPath = "../../../Output/Res3DataFloatCpp.txt";
+        private readonly string Results1DoublePath = "../../../Output/Res1DataDoubleCpp.txt";
+        private readonly string Results2DoublePath = "../../../Output/Res2DataDoubleCpp.txt";
+        private readonly string Results3DoublePath = "../../../Output/Res3DataDoubleCpp.txt";
+        private readonly string Results1DoubleCsPath = "../../../Output/Res1DataDoubleCs.txt";
+        private readonly string Results2DoubleCsPath = "../../../Output/Res2DataDoubleCs.txt";
+        private readonly string Results3DoubleCsPath = "../../../Output/Res3DataDoubleCs.txt";
         private readonly string ResultsNorms1Float = "../../../Output/ResultsNorms1Float.txt";
         private readonly string ResultsNorms2Float = "../../../Output/ResultsNorms2Float.txt";
         private readonly string ResultsNorms3Float = "../../../Output/ResultsNorms3Float.txt";
@@ -44,31 +45,36 @@ namespace MatrixCalculator
         private readonly string NormsFullDouble = "../../../Output/NormsFullDouble.txt";
         
 
-        private void CompareDoubleCsCppAndFraction()
-        {
-            //tylko res 1 -3
-            
-        }
-
         public void CompareFloatCsAndCpp()
         {
-            var results1CsFloat = ParseFile<float>(File.ReadAllLines(Results1FloatCsPath));
-            var results1Float = ParseFile<float>(File.ReadAllLines(Results1FloatPath));
-            var normsForResults =    
-                results1CsFloat.Zip(results1Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
-            File.WriteAllLines(ResultsNorms1Float, normsForResults);
-
-            var results2CsFloat = ParseFile<float>(File.ReadAllLines(Results2FloatCsPath));
-            var results2Float = ParseFile<float>(File.ReadAllLines(Results2FloatPath));
-            normsForResults =
-                results2CsFloat.Zip(results2Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
-            File.WriteAllLines(ResultsNorms2Float, normsForResults);
-
-            var results3CsFloat = ParseFile<float>(File.ReadAllLines(Results3FloatCsPath));
-            var results3Float = ParseFile<float>(File.ReadAllLines(Results3FloatPath));
-            normsForResults =
-                results3CsFloat.Zip(results3Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
-            File.WriteAllLines(ResultsNorms3Float, normsForResults);
+            var results1CsFloat = ParseFile<float>(File.ReadAllLines(Results1FloatCsPath)).ToArray();
+            var results1Float = ParseFile<float>(File.ReadAllLines(Results1FloatPath)).ToArray();
+            var norms = new List<double>();
+            for (int i = 0; i < results1CsFloat.Length; i++)
+            {
+                var norm = 0.0;
+                for (int j = 0; j < results1CsFloat[i].Count; j++)
+                {
+                    norm = results1CsFloat[i][j] - results1Float[i][j] > norm
+                        ? results1CsFloat[i][j] - results1Float[i][j]
+                        : norm;
+                }
+                norms.Add(norm);
+            }
+            //var normsForResults = results1CsFloat.Zip(results1Float, (x, y) => x.Zip(y, (a, b) => a - b).ToList()).ToList();
+            File.WriteAllLines(ResultsNorms1Float, new List<string>());
+//
+//            var results2CsFloat = ParseFile<float>(File.ReadAllLines(Results2FloatCsPath));
+//            var results2Float = ParseFile<float>(File.ReadAllLines(Results2FloatPath));
+//            normsForResults =
+//                results2CsFloat.Zip(results2Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString()).ToList();
+//            File.WriteAllLines(ResultsNorms2Float, normsForResults);
+//
+//            var results3CsFloat = ParseFile<float>(File.ReadAllLines(Results3FloatCsPath));
+//            var results3Float = ParseFile<float>(File.ReadAllLines(Results3FloatPath));
+//            normsForResults =
+//                results3CsFloat.Zip(results3Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString()).ToList();
+//            File.WriteAllLines(ResultsNorms3Float, normsForResults);
         }
 
         private void CompareDoubleCsAndCpp()
