@@ -31,53 +31,40 @@ namespace MatrixCalculator
         private readonly string GaussDoubleCsPath = "../../../Output/GaussDataDoubleCs.txt";
         private readonly string PartialDoubleCsPath = "../../../Output/PartialDataDoubleCs.txt";
         private readonly string FullDoubleCsPath = "../../../Output/FullDataDoubleCs.txt";
-        private readonly string GaussFloatPath = "../../../Output/GaussDataFloat.txt";
-        private readonly string PartialFloatPath = "../../../Output/PartialDataFloat.txt";
-        private readonly string FullFloatPath = "../../../Output/FullDataFloat.txt";
-        private readonly string GaussDoublePath = "../../../Output/GaussDataDouble.txt";
-        private readonly string PartialDoublePath = "../../../Output/PartialDataDouble.txt";
-        private readonly string FullDoublePath = "../../../Output/FullDataDouble.txt";
+        private readonly string PartialFloatPath = "../../../Output/PartialDataFloatCpp.txt";
+        private readonly string FullFloatPath = "../../../Output/FullDataFloatCpp.txt";
+        private readonly string PartialDoublePath = "../../../Output/PartialDataDoubleCpp.txt";
+        private readonly string FullDoublePath = "../../../Output/FullDataDoubleCpp.txt";
         private readonly string NormsGaussFloat = "../../../Output/NormsGaussFloat.txt";
         private readonly string NormsPartialFloat = "../../../Output/NormsPartialFloat.txt";
         private readonly string NormsFullFloat = "../../../Output/NormsFullFloat.txt";
         private readonly string NormsGaussDouble = "../../../Output/NormsGaussDouble.txt";
         private readonly string NormsPartialDouble = "../../../Output/NormsPartialDouble.txt";
         private readonly string NormsFullDouble = "../../../Output/NormsFullDouble.txt";
-        
+
 
         public void CompareFloatCsAndCpp()
         {
             var results1CsFloat = ParseFile<float>(File.ReadAllLines(Results1FloatCsPath)).ToArray();
             var results1Float = ParseFile<float>(File.ReadAllLines(Results1FloatPath)).ToArray();
-            var norms = new List<double>();
-            for (int i = 0; i < results1CsFloat.Length; i++)
-            {
-                var norm = 0.0;
-                for (int j = 0; j < results1CsFloat[i].Count; j++)
-                {
-                    norm = results1CsFloat[i][j] - results1Float[i][j] > norm
-                        ? results1CsFloat[i][j] - results1Float[i][j]
-                        : norm;
-                }
-                norms.Add(norm);
-            }
-            //var normsForResults = results1CsFloat.Zip(results1Float, (x, y) => x.Zip(y, (a, b) => a - b).ToList()).ToList();
-            File.WriteAllLines(ResultsNorms1Float, new List<string>());
-//
-//            var results2CsFloat = ParseFile<float>(File.ReadAllLines(Results2FloatCsPath));
-//            var results2Float = ParseFile<float>(File.ReadAllLines(Results2FloatPath));
-//            normsForResults =
-//                results2CsFloat.Zip(results2Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString()).ToList();
-//            File.WriteAllLines(ResultsNorms2Float, normsForResults);
-//
-//            var results3CsFloat = ParseFile<float>(File.ReadAllLines(Results3FloatCsPath));
-//            var results3Float = ParseFile<float>(File.ReadAllLines(Results3FloatPath));
-//            normsForResults =
-//                results3CsFloat.Zip(results3Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString()).ToList();
-//            File.WriteAllLines(ResultsNorms3Float, normsForResults);
+            var normsForResults = 
+                results1CsFloat.Zip(results1Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
+            File.WriteAllLines(ResultsNorms1Float, normsForResults);
+
+            var results2CsFloat = ParseFile<float>(File.ReadAllLines(Results2FloatCsPath));
+            var results2Float = ParseFile<float>(File.ReadAllLines(Results2FloatPath));
+            normsForResults =
+                results2CsFloat.Zip(results2Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
+            File.WriteAllLines(ResultsNorms2Float, normsForResults);
+
+            var results3CsFloat = ParseFile<float>(File.ReadAllLines(Results3FloatCsPath));
+            var results3Float = ParseFile<float>(File.ReadAllLines(Results3FloatPath));
+            normsForResults =
+                results3CsFloat.Zip(results3Float, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
+            File.WriteAllLines(ResultsNorms3Float, normsForResults);
         }
 
-        private void CompareDoubleCsAndCpp()
+        public void CompareDoubleCsAndCpp()
         {
             var results1CsDouble = ParseFile<double>(File.ReadAllLines(Results1DoubleCsPath));
             var results1Double = ParseFile<double>(File.ReadAllLines(Results1DoublePath));
@@ -98,10 +85,10 @@ namespace MatrixCalculator
             File.WriteAllLines(ResultsNorms3Double, normsForResults);
         }
 
-        private void CompareGaussFloat()
+        public void CompareGaussFloat()
         {
             var gaussCsFloat = ParseFile<float>(File.ReadAllLines(GaussFloatCsPath));
-            var gaussFloat = ParseFile<float>(File.ReadAllLines(GaussFloatPath));
+            var gaussFloat = ParseFile<float>(File.ReadAllLines(PartialFloatPath));
             var normsForResults =
                 gaussCsFloat.Zip(gaussFloat, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
             File.WriteAllLines(NormsGaussFloat, normsForResults);
@@ -119,10 +106,10 @@ namespace MatrixCalculator
             File.WriteAllLines(NormsFullFloat, normsForResults);
         }
 
-        private void CompareGaussDoubleAndFraction()
+        public void CompareGaussDouble()
         {
             var gaussCsDouble = ParseFile<double>(File.ReadAllLines(GaussDoubleCsPath));
-            var gaussDouble = ParseFile<double>(File.ReadAllLines(GaussDoublePath));
+            var gaussDouble = ParseFile<double>(File.ReadAllLines(FullDoublePath));
             var normsForResults =
                 gaussCsDouble.Zip(gaussDouble, (x, y) => x.Zip(y, (a, b) => a > b ? a - b : b - a).Max().ToString());
             File.WriteAllLines(NormsGaussDouble, normsForResults);
