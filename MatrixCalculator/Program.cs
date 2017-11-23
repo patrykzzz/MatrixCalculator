@@ -8,10 +8,10 @@ namespace MatrixCalculator
 {
     public class Program
     {
-        private readonly StreamWriter _firstMatrixFloat = new StreamWriter("../../../Output/FirstMatrixDataFloat.txt");
-        private readonly StreamWriter _secondMatrixFloat = new StreamWriter("../../../Output/SecondMatrixDataFloat.txt");
-        private readonly StreamWriter _thirdMatrixFloat = new StreamWriter("../../../Output/ThirdMatrixDataFloat.txt");
-        private readonly StreamWriter _vectorFloat = new StreamWriter("../../../Output/VectorDataFloat.txt");
+//        private readonly StreamWriter _firstMatrixFloat = new StreamWriter("../../../Output/FirstMatrixDataFloat.txt");
+//        private readonly StreamWriter _secondMatrixFloat = new StreamWriter("../../../Output/SecondMatrixDataFloat.txt");
+//        private readonly StreamWriter _thirdMatrixFloat = new StreamWriter("../../../Output/ThirdMatrixDataFloat.txt");
+//        private readonly StreamWriter _vectorFloat = new StreamWriter("../../../Output/VectorDataFloat.txt");
         private readonly StreamWriter _firstOpFloat = new StreamWriter("../../../Output/Res1DataFloatCs.txt");
         private readonly StreamWriter _secOpFloat = new StreamWriter("../../../Output/Res2DataFloatCs.txt");
         private readonly StreamWriter _thrdOpFloat = new StreamWriter("../../../Output/Res3DataFloatCs.txt");
@@ -54,20 +54,8 @@ namespace MatrixCalculator
             for (int i = multiplier; i < range ; i += multiplier)
             {
                 Console.WriteLine("Iteration - " + i);
-                program.CreateFillMatrixAndWriteToFileFloat(i);
                 program.CreateFillMatrixAndWriteToFileFraction(i);
             }
-
-            program._firstMatrixFloat.Close();
-            program._secondMatrixFloat.Close();
-            program._thirdMatrixFloat.Close();
-            program._vectorFloat.Close();
-            program._firstOpFloat.Close();
-            program._secOpFloat.Close();
-            program._thrdOpFloat.Close();
-            program._gaussFloat.Close();
-            program._partialFloat.Close();
-            program._fullFloat.Close();
 
             program._firstMatrixFraction.Close();
             program._secondMatrixFraction.Close();
@@ -101,41 +89,32 @@ namespace MatrixCalculator
             program._partialFractionDouble.Close();
             program._fullFractionDouble.Close();
 
+            program._firstMatrixFractionDouble = new StreamReader("../../../Output/FirstMatrixDataFraction.txt");
+            program._secondMatrixFractionDouble = new StreamReader("../../../Output/SecondMatrixDataFraction.txt");
+            program._thirdMatrixFractionDouble = new StreamReader("../../../Output/ThirdMatrixDataFraction.txt");
+            program._vectorFractionDouble = new StreamReader("../../../Output/VectorDataFraction.txt");
+
+            for (int i = multiplier; i < range; i += multiplier)
+            {
+                Console.WriteLine("Float iteration - " + i);
+                program.CreateFillMatrixAndWriteToFileFloat(i);
+            }
+
+            program._firstMatrixFractionDouble.Close();
+            program._secondMatrixFractionDouble.Close();
+            program._thirdMatrixFractionDouble.Close();
+            program._vectorFractionDouble.Close();
+            program._firstOpFloat.Close();
+            program._secOpFloat.Close();
+            program._thrdOpFloat.Close();
+            program._gaussFloat.Close();
+            program._partialFloat.Close();
+            program._fullFloat.Close();
+
             Console.WriteLine("Program ended its operation");
             Console.ReadKey();
         }
 
-        private void CreateFillMatrixAndWriteToFileFloat(int size)
-        {
-            var file = new File<float>();
-
-            var matrixA = new Matrix<float>(size, size);
-            var matrixB = new Matrix<float>(size, size);
-            var matrixC = new Matrix<float>(size, size);
-            float[] vector = file.FillVectorWithRandom(size);
-
-
-            var res1 = matrixA * vector;
-            var res2 = (matrixA + matrixB + matrixC) * vector;
-            var res3 = matrixA * (matrixB * matrixC);
-
-            file.WriteToFile(matrixA, size, _firstMatrixFloat);
-            file.WriteToFile(matrixB, size, _secondMatrixFloat);
-            file.WriteToFile(matrixC, size, _thirdMatrixFloat);
-            file.WriteToFile(vector, size, _vectorFloat);
-
-            var gauss = matrixA.GaussWithoutChoice((float[])vector.Clone());
-            var pivot = matrixA.GaussWithPartialPivot((float[])vector.Clone());
-            var full = matrixA.GaussWithCompletePivot((float[])vector.Clone());
-
-            file.WriteToFile(res1, size, _firstOpFloat);
-            file.WriteToFile(res2, size, _secOpFloat);
-            file.WriteToFile(res3, size, _thrdOpFloat);
-
-            file.WriteToFile(gauss, size, _gaussFloat);
-            file.WriteToFile(pivot, size, _partialFloat);
-            file.WriteToFile(full, size, _fullFloat);
-        }
 
         private void CreateFillMatrixAndWriteToFileFraction(int size)
         {
@@ -170,6 +149,34 @@ namespace MatrixCalculator
 //            file.WriteToFile(pivot, size, _partialFraction);
 //            file.WriteToFile(full, size, _fullFraction);
         }
+
+        private void CreateFillMatrixAndWriteToFileFloat(int size)
+        {
+            var file = new File<float>();
+
+            var matrixA = new Matrix<float>(file.ReadMatrixFromFile(size, _firstMatrixFractionDouble));
+            var matrixB = new Matrix<float>(file.ReadMatrixFromFile(size, _secondMatrixFractionDouble));
+            var matrixC = new Matrix<float>(file.ReadMatrixFromFile(size, _thirdMatrixFractionDouble));
+            float[] vector = file.ReadVectorFromFile(size, _vectorFractionDouble);
+
+
+            var res1 = matrixA * vector;
+            var res2 = (matrixA + matrixB + matrixC) * vector;
+            var res3 = matrixA * (matrixB * matrixC);
+
+            var gauss = matrixA.GaussWithoutChoice((float[])vector.Clone());
+            var pivot = matrixA.GaussWithPartialPivot((float[])vector.Clone());
+            var full = matrixA.GaussWithCompletePivot((float[])vector.Clone());
+
+            file.WriteToFile(res1, size, _firstOpFloat);
+            file.WriteToFile(res2, size, _secOpFloat);
+            file.WriteToFile(res3, size, _thrdOpFloat);
+
+            file.WriteToFile(gauss, size, _gaussFloat);
+            file.WriteToFile(pivot, size, _partialFloat);
+            file.WriteToFile(full, size, _fullFloat);
+        }
+
 
         private void CreateFillMatrixAndWriteToFileFractionDouble(int size)
         {

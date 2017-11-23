@@ -149,28 +149,12 @@ namespace MatrixCalculator
 
         private static BigInteger GreatestCommonDivisor(BigInteger a, BigInteger b)
         {
-                        while (b != 0)
-                        {
-                            BigInteger tmp = b;
-                            b = a % b;
-                            a = tmp;
-                        }
-
-//            while (num != den)
-//            {
-//                if (num < den)
-//                {
-//                    den -= num;
-
-//                }
-//                else
-//                {
-//                    num -= den;
-//                }
-//            }
-//
-//            return num;
-
+            while (b != 0)
+            {
+                BigInteger tmp = b;
+                b = a % b;
+                a = tmp;
+            }
             return a;
         }
 
